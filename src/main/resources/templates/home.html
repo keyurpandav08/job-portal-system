@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Job Portal - Home</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        .nav { margin-bottom: 20px; }
+        .btn { padding: 10px 15px; margin: 5px; text-decoration: none; border-radius: 4px; display: inline-block; }
+        .btn-primary { background: #007bff; color: white; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .welcome-section { text-align: center; margin: 30px 0; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🎯 Job Portal System</h1>
+
+    <div class="nav">
+        <a th:href="@{/jobs}" class="btn btn-primary">Browse Jobs</a>
+        <a th:href="@{/login}" class="btn btn-primary">Login</a>
+        <a th:href="@{/register}" class="btn btn-primary">Register</a>
+    </div>
+
+    <div class="welcome-section">
+        <h3>Welcome to Job Portal!</h3>
+        <p>Find your dream job or post job opportunities</p>
+    </div>
+
+    <h3>Features:</h3>
+    <ul>
+        <li>Employers can post jobs</li>
+        <li>Applicants can apply for jobs</li>
+        <li>Track application status</li>
+        <li>Search and filter jobs</li>
+    </ul>
+</div>
+</body>
+</html>

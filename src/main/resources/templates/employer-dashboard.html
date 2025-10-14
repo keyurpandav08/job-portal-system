@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Employer Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
+    .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+    .nav { margin-bottom: 20px; }
+    .btn { padding: 10px 15px; margin: 5px; text-decoration: none; border-radius: 4px; display: inline-block; }
+    .btn-primary { background: #007bff; color: white; }
+    .btn-success { background: #28a745; color: white; }
+    .job-card { border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 4px; }
+    .form-group { margin-bottom: 15px; }
+    input, textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+    .alert { padding: 10px; margin: 10px 0; border-radius: 4px; }
+    .alert-success { background: #d4edda; color: #155724; }
+    .alert-error { background: #f8d7da; color: #721c24; }
+    .no-jobs { text-align: center; padding: 40px; color: #666; }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h2>Employer Dashboard</h2>
+
+  <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+  <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
+  <div class="nav">
+    <a th:href="@{/jobs}" class="btn btn-primary">Browse Jobs</a>
+    <a th:href="@{/logout}" class="btn btn-primary">Logout</a>
+  </div>
+
+  <h3>Post New Job</h3>
+  <form th:action="@{/dashboard/employer/jobs}" method="post" th:object="${newJob}">
+    <div class="form-group">
+      <input type="text" th:field="*{title}" placeholder="Job Title" required>
+    </div>
+    <div class="form-group">
+      <textarea th:field="*{description}" placeholder="Job Description" rows="3" required></textarea>
+    </div>
+    <div class="form-group">
+      <input type="text" th:field="*{location}" placeholder="Location" required>
+    </div>
+    <div class="form-group">
+      <input type="number" th:field="*{salary}" placeholder="Salary" step="0.01" required>
+    </div>
+    <button type="submit" class="btn btn-success">Post Job</button>
+  </form>
+
+  <h3>My Job Postings</h3>
+  <div th:if="${not #lists.isEmpty(jobs)}">
+    <div th:each="job : ${jobs}" class="job-card">
+      <h4 th:text="${job.title}"></h4>
+      <p th:text="${job.description}"></p>
+      <p><strong>Location:</strong> <span th:text="${job.location}"></span></p>
+      <p><strong>Salary:</strong> $<span th:text="${job.salary}"></span></p>
+      <p><strong>Status:</strong> <span th:text="${job.status}"></span></p>
+      <p>
+        <a th:href="@{/dashboard/employer/jobs/{jobId}/applications(jobId=${job.id})}"
+           class="btn btn-primary">
+          View Applications (<span th:text="${applicationCounts.get(job.id)}">0</span>)
+        </a>
+      </p>
+    </div>
+  </div>
+
+  <div th:if="${#lists.isEmpty(jobs)}" class="no-jobs">
+    <p>No jobs posted yet.</p>
+  </div>
+</div>
+</body>
+</html>

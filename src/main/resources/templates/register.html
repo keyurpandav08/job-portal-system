@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register - Job Portal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 500px;
+            width: 100%;
+            margin: 20px;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        input:focus, select:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0,123,255,0.3);
+        }
+        .btn {
+            padding: 12px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        .alert {
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .home-link {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        small {
+            color: #666;
+            font-size: 12px;
+            display: block;
+            margin-top: 5px;
+        }
+        .form-note {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border-left: 4px solid #007bff;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Create Your Account</h2>
+
+    <div class="home-link">
+        <a th:href="@{/home}">← Back to Home</a>
+    </div>
+
+    <div class="form-note">
+        <strong>Choose your role:</strong><br>
+        • <strong>Applicant</strong> - Browse and apply for jobs<br>
+        • <strong>Employer</strong> - Post jobs and manage applications
+    </div>
+
+    <div th:if="${error}" class="alert alert-error" th:text="${error}">Error message</div>
+    <div th:if="${success}" class="alert alert-success" th:text="${success}">Success message</div>
+
+    <form th:action="@{/register}" method="post" th:object="${user}">
+        <!-- Basic Information -->
+        <div class="form-group">
+            <label for="username">Username: *</label>
+            <input type="text" id="username" th:field="*{username}" placeholder="Enter your username" required>
+            <small>This will be your login username</small>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email Address: *</label>
+            <input type="email" id="email" th:field="*{email}" placeholder="Enter your email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password: *</label>
+            <input type="password" id="password" th:field="*{password}" placeholder="Create a password" required>
+            <small>Use a strong password with letters, numbers, and symbols</small>
+        </div>
+
+        <!-- Personal Details -->
+        <div class="form-group">
+            <label for="fullName">Full Name:</label>
+            <input type="text" id="fullName" th:field="*{fullName}" placeholder="Enter your full name">
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Phone Number:</label>
+            <input type="text" id="phone" th:field="*{phone}" placeholder="Enter your phone number">
+        </div>
+
+        <!-- Professional Information -->
+        <div class="form-group">
+            <label for="skills">Skills:</label>
+            <input type="text" id="skills" th:field="*{skills}" placeholder="e.g., Java, Spring Boot, MySQL, React">
+            <small>Separate skills with commas</small>
+        </div>
+
+        <div class="form-group">
+            <label for="experience">Experience:</label>
+            <input type="text" id="experience" th:field="*{experience}" placeholder="e.g., 2 years, Fresh Graduate, 5+ years">
+        </div>
+
+        <!-- Role Selection -->
+        <div class="form-group">
+            <label for="role">I want to register as: *</label>
+            <select id="role" th:field="*{role}" required>
+                <option value="">Select your role</option>
+                <option value="1">👤 Applicant - I want to find and apply for jobs</option>
+                <option value="2">💼 Employer - I want to post jobs and hire candidates</option>
+            </select>
+            <small>Choose carefully as this determines your dashboard features</small>
+        </div>
+
+        <button type="submit" class="btn">Create Account</button>
+    </form>
+
+    <div class="login-link">
+        <p>Already have an account? <a th:href="@{/login}">Login here</a></p>
+    </div>
+</div>
+
+<script>
+    // Simple client-side validation
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const password = document.getElementById('password').value;
+        const role = document.getElementById('role').value;
+
+        if (!role) {
+            alert('Please select your role (Applicant or Employer)');
+            e.preventDefault();
+            return;
+        }
+
+        if (password.length < 6) {
+            alert('Password should be at least 6 characters long');
+            e.preventDefault();
+            return;
+        }
+    });
+</script>
+</body>
+</html>
