@@ -2,6 +2,9 @@
 
 A complete web-based Job Portal application built with Spring Boot that connects job seekers with employers. This platform allows employers to post job opportunities while enabling applicants to browse and apply for positions seamlessly.
 
+## 📢For Better Understand The Flow Refers To My Video : 
+👉 https://youtu.be/DxSpEyaUvmU?si=0G3Eai4lI_qSitMW
+
 ## 🎯 What This System Does
 
 ### For Job Seekers (Applicants)
