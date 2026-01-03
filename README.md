@@ -99,12 +99,24 @@ Contributions make the open-source community an amazing place!
 
 ---
 
-## 🗺️ Roadmap
+## 🗺️ Project Roadmap
 
-* [ ] Email notifications for status changes.
-* [ ] Resume file upload (Multipart support).
-* [ ] Advanced job search filters (Category, Salary Range).
-* [ ] Admin Dashboard for platform-wide metrics.
+We are actively looking for contributors to help implement the following features. If you'd like to work on one, please open an issue first!
+
+### 🟢 Phase 1: Core Enhancements (Low Hanging Fruit)
+- [ ] **Validation:** Add `@Valid` annotations to controller inputs for better error handling.
+- [ ] **Search Filters:** Add the ability to filter jobs by Location or Salary Range.
+- [ ] **Password Encryption:** Ensure all passwords are encrypted using BCrypt (Spring Security).
+
+### 🟡 Phase 2: User Experience (Frontend & UX)
+- [ ] **Flash Messages:** Add "Success" or "Error" alerts after applying for a job or posting a listing.
+- [ ] **Profile Pictures:** Allow users to upload profile images via AWS S3 or local storage.
+- [ ] **Dark Mode:** Add a toggle for dark/light theme using CSS variables.
+
+### 🔴 Phase 3: Advanced Features
+- [ ] **Resume Parsing:** Automatically extract skills from uploaded PDF resumes.
+- [ ] **Email Notifications:** Send automated emails when an application status changes to "Accepted".
+- [ ] **Admin Dashboard:** A third role for platform admins to manage users and moderate job posts.
 
 ---
 
