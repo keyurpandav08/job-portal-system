@@ -4,7 +4,7 @@
 
 A robust, full-stack Job Portal application built with **Spring Boot**, **Thymeleaf**, and **PostgreSQL**. This system features a dual-role architecture (Applicant & Employer) with role-based access control and real-time application tracking.
 
-🎬 **[Watch the System Flow Explanation Video](https://www.google.com/search?q=https://youtu.be/DxSpEyaUvmU)**
+🎬 **[Watch the System Flow Explanation Video](https://www.youtube.com/watch?v=DxSpEyaUvmU)**
 
 ---
 
@@ -95,7 +95,7 @@ Contributions make the open-source community an amazing place!
 4. Push to the Branch (`git push origin feature/AmazingFeature`).
 5. Open a Pull Request.
 
-*See [CONTRIBUTING.md](https://www.google.com/search?q=CONTRIBUTING.md) for more details.*
+*See [CONTRIBUTING.md](CONTRIBUTING.md) for more details.*
 
 ---
 
@@ -122,6 +122,6 @@ We are actively looking for contributors to help implement the following feature
 
 ## 📄 License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the MIT License. See `LICENSE`(LICENSE) for more information.
 
 ---
