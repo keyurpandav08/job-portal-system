@@ -95,7 +95,7 @@ Contributions make the open-source community an amazing place!
 4. Push to the Branch (`git push origin feature/AmazingFeature`).
 5. Open a Pull Request.
 
-*See [CONTRIBUTING.md](vallabhatech/job-portal-system/CONTRIBUTING.md) for more details.*
+*See [CONTRIBUTING.md](CONTRIBUTING.md) for more details.*
 
 ---
 
