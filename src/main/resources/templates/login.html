@@ -3,39 +3,147 @@
 <head>
   <meta charset="UTF-8">
   <title>Login - Job Portal</title>
+
   <style>
-    body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
-    .container { max-width: 400px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
-    .form-group { margin-bottom: 15px; }
-    label { display: block; margin-bottom: 5px; }
-    input[type="text"], input[type="password"] { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
-    .btn { padding: 10px 15px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
-    .alert { padding: 10px; margin: 10px 0; border-radius: 4px; }
-    .alert-error { background: #f8d7da; color: #721c24; }
-    .alert-success { background: #d4edda; color: #155724; }
+    body {
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      background: #f5f5f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 400px;
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #007bff;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 10px;
+      background: #007bff;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: #0056b3;
+    }
+
+    .alert {
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .alert-error {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .alert-success {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .links {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .links a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .links a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
+
 <body>
 <div class="container">
+
   <h2>Login to Job Portal</h2>
 
-  <div th:if="${error}" class="alert alert-error" th:text="${error}">Error message</div>
-  <div th:if="${message}" class="alert alert-success" th:text="${message}">Success message</div>
+  <!-- Error message -->
+  <div th:if="${param.error}" class="alert alert-error">
+    Invalid username or password.
+  </div>
+
+  <!-- Logout success message -->
+  <div th:if="${param.logout}" class="alert alert-success">
+    You have been logged out successfully.
+  </div>
 
   <form th:action="@{/login}" method="post">
+    
+    <input type="hidden"
+       th:name="${_csrf.parameterName}"
+       th:value="${_csrf.token}" />
+
     <div class="form-group">
-      <label for="username">Username:</label>
-      <input type="text" id="username" name="username" required>
+      <label for="username">Email</label>
+      <input type="email" id="username" name="username"
+             placeholder="Enter your email"
+             required>
     </div>
+
     <div class="form-group">
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" required>
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password"
+             placeholder="Enter your password"
+             required>
     </div>
+
     <button type="submit" class="btn">Login</button>
   </form>
 
-  <p>Don't have an account? <a th:href="@{/register}">Register here</a></p>
-  <p><a th:href="@{/home}">Back to Home</a></p>
+  <div class="links">
+    <p>Don't have an account? <a th:href="@{/register}">Register here</a></p>
+    <p><a th:href="@{/home}">Back to Home</a></p>
+  </div>
+
 </div>
 </body>
 </html>
