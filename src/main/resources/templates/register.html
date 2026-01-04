@@ -120,8 +120,14 @@
         • <strong>Employer</strong> - Post jobs and manage applications
     </div>
 
-    <div th:if="${error}" class="alert alert-error" th:text="${error}">Error message</div>
-    <div th:if="${success}" class="alert alert-success" th:text="${success}">Success message</div>
+    <div th:if="${param.error}" class="alert alert-error">
+          Registration failed. Please check your details and try again.
+    </div>
+
+    <div th:if="${param.success}" class="alert alert-success">
+          Registration successful! You can now log in.
+     </div>
+
 
     <form th:action="@{/register}" method="post" th:object="${user}">
         <!-- Basic Information -->
@@ -150,7 +156,7 @@
 
         <div class="form-group">
             <label for="phone">Phone Number:</label>
-            <input type="text" id="phone" th:field="*{phone}" placeholder="Enter your phone number">
+            <input type="tel" id="phone" th:field="*{phone}" placeholder="Enter your phone number">
         </div>
 
         <!-- Professional Information -->
@@ -162,7 +168,7 @@
 
         <div class="form-group">
             <label for="experience">Experience:</label>
-            <input type="text" id="experience" th:field="*{experience}" placeholder="e.g., 2 years, Fresh Graduate, 5+ years">
+            <input type="text" id="experience" th:field="*{experience}" placeholder="e.g., Fresh Graduate, 2 years, 5+ years">
         </div>
 
         <!-- Role Selection -->
