@@ -1,12 +1,56 @@
+<div align="center">
+
+# 💼 JobSphere: Enterprise Job Portal
+### **Spring Boot • Security • PostgreSQL • Thymeleaf**
+
+A high-performance, role-based career platform designed to bridge the gap between talent and opportunity. Built with a focus on secure authentication, relational data integrity, and real-time application workflows.
+
+[![Spring Boot](https://img.shields.io/badge/Spring--Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
+[![Spring Security](https://img.shields.io/badge/Spring--Security-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white)](https://spring.io/projects/spring-security)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Thymeleaf](https://img.shields.io/badge/Thymeleaf-%23005F0F.svg?style=for-the-badge&logo=Thymeleaf&logoColor=white)](https://www.thymeleaf.org/)
+
 ---
 
-# 💼 Job Portal System
+[🎥 System Walkthrough](https://www.youtube.com/watch?v=DxSpEyaUvmU) • [🏗️ Architecture](#-system-architecture) • [🚀 Setup Guide](#-quick-start) • [🛡️ Security Logic](#-security--authentication)
 
-A robust, full-stack Job Portal application built with **Spring Boot**, **Thymeleaf**, and **PostgreSQL**. This system features a dual-role architecture (Applicant & Employer) with role-based access control and real-time application tracking.
-
-🎬 **[Watch the System Flow Explanation Video](https://www.youtube.com/watch?v=DxSpEyaUvmU)**
+</div>
 
 ---
+
+## 📺 Project Showcase
+
+Explore the full system flow, including user registration, role-based dashboard redirection, and real-time application status updates.
+
+> [!TIP]
+> **[Watch the Complete System Flow Explanation Video 🎬](https://www.youtube.com/watch?v=DxSpEyaUvmU)**
+> *Includes: Employer job posting, Applicant tracking, and Status management.*
+
+---
+
+## 🏗️ System Architecture
+
+The project follows a modular **MVC (Model-View-Controller)** pattern with a clear separation of concerns, ensuring scalability and maintainability.
+
+```text
+JobPortalEngine (Core)
+┃
+┣━━ 🔐 Security Layer (Spring Security)
+┃   ┣━━ 🛡️ Role-Based Auth ..... [Applicant / Employer]
+┃   ┣━━ 🔑 BCrypt Encoding ...... [Password Security]
+┃   ┗━━ 🚦 Access Control ...... [https://www.merriam-webster.com/dictionary/authorization](https://www.merriam-webster.com/dictionary/authorization)
+┃
+┣━━ 📦 Business Logic (Services)
+┃   ┣━━ 💼 Job Orchestrator .... [Post / Edit / Delete]
+┃   ┣━━ 📄 Application Flow .... [Apply / Status Update]
+┃   ┗━━ 👤 User Management ..... [Profile / Skills / Experience]
+┃
+┣━━ 💾 Persistence (Data JPA)
+┃   ┣━━ 🐘 PostgreSQL .......... [Relational Database]
+┃   ┗━━ 🔗 Entity Mapping ...... [One-to-Many / Many-to-One]
+┃
+┗━━ 🎨 Presentation (Thymeleaf)
+    ┗━━ 📱 Dynamic Dashboards .. [Role-Specific Views]
 
 ## 🚀 Key Features
 
