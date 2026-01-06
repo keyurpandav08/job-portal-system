@@ -3,78 +3,288 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Browse Jobs</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
-        .container { max-width: 1000px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
-        .nav { margin-bottom: 20px; }
-        .btn { padding: 10px 15px; margin: 5px; text-decoration: none; border-radius: 4px; display: inline-block; }
-        .btn-primary { background: #007bff; color: white; }
-        .btn-success { background: #28a745; color: white; }
-        .job-card { border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 4px; }
-        .apply-form { margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 4px; }
-        input { width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ddd; border-radius: 4px; }
-        .alert { padding: 10px; margin: 10px 0; border-radius: 4px; }
-        .alert-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .alert-error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        .login-prompt { background: #fff3cd; color: #856404; padding: 15px; border-radius: 5px; margin: 10px 0; text-align: center; }
-        .no-jobs { text-align: center; padding: 40px; color: #666; }
-        .employer-note { background: #d1ecf1; color: #0c5460; padding: 10px; border-radius: 4px; margin: 10px 0; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .header h2 {
+            font-size: 2em;
+            font-weight: 700;
+        }
+        
+        .nav {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .btn-primary {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 4px 15px rgba(255,255,255,0.2);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,255,255,0.3);
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .alert {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background: #fee;
+            color: #c33;
+            border: 2px solid #fcc;
+        }
+        
+        .employer-note {
+            background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+            color: #0c5460;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #0c5460;
+        }
+        
+        .job-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .job-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+        }
+        
+        .job-card h4 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        
+        .job-card p {
+            color: #666;
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+        
+        .job-meta {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .job-meta span {
+            color: #667eea;
+            font-weight: 600;
+        }
+        
+        .apply-form {
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 10px;
+        }
+        
+        .apply-form input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .apply-form input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .login-prompt {
+            background: #fff3cd;
+            color: #856404;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            border-left: 4px solid #856404;
+        }
+        
+        .login-prompt a {
+            color: #667eea;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
+        .login-prompt a:hover {
+            text-decoration: underline;
+        }
+        
+        .employer-message {
+            color: #6c757d;
+            font-style: italic;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        
+        .no-jobs {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        
+        .no-jobs h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
     </style>
 </head>
 <body>
 <div class="container">
-    <h2>🔍 Browse All Jobs</h2>
-
-    <!-- Success/Error Messages -->
-    <div th:if="${success}" class="alert alert-success" th:text="${success}">Success message</div>
-    <div th:if="${error}" class="alert alert-error" th:text="${error}">Error message</div>
-
-    <!-- Navigation -->
-    <div class="nav">
-        <a th:href="@{/dashboard}" class="btn btn-primary">Back to Dashboard</a>
-        <a th:href="@{/applications/my-applications}" class="btn btn-primary" sec:authorize="hasRole('APPLICANT')">My Applications</a>
-        <a th:href="@{/logout}" class="btn btn-primary">Logout</a>
-    </div>
-
-    <!-- Employer Note -->
-    <div class="employer-note" sec:authorize="hasRole('EMPLOYER')">
-        <strong>👋 Employer View:</strong> You can browse jobs but cannot apply. Use your employer dashboard to manage your job postings and applications.
-    </div>
-
-    <div th:if="${not #lists.isEmpty(jobs)}">
-        <div th:each="job : ${jobs}" class="job-card">
-            <h4 th:text="${job.title}">Job Title</h4>
-            <p th:text="${job.description}">Job Description</p>
-            <p><strong>Location:</strong> <span th:text="${job.location}">Location</span></p>
-            <p><strong>Salary:</strong> $<span th:text="${job.salary}">Salary</span></p>
-            <p><strong>Employer:</strong> <span th:text="${job.employerName}">Employer</span></p>
-            <p><strong>Status:</strong> <span th:text="${job.status}">Status</span></p>
-
-            <!-- Apply form for APPLICANTS only -->
-            <div class="apply-form" sec:authorize="hasRole('APPLICANT')">
-                <form th:action="@{/applications/apply/{jobId}(jobId=${job.id})}" method="post">
-                    <input type="text" name="resumeUrl" placeholder="Paste your resume URL here (e.g., https://drive.google.com/...)" required>
-                    <button type="submit" class="btn btn-success">Apply for this Job</button>
-                </form>
-            </div>
-
-            <!-- Message for employers -->
-            <div sec:authorize="hasRole('EMPLOYER')">
-                <p style="color: #6c757d; font-style: italic;">👨‍💼 You are an employer - you cannot apply for jobs</p>
-            </div>
-
-            <!-- Login prompt for non-logged users -->
-            <div class="login-prompt" sec:authorize="!isAuthenticated()">
-                <p>🔒 You need to <a th:href="@{/login}">login</a> to apply for this job</p>
-            </div>
+    <div class="header">
+        <h2>🔍 Browse All Jobs</h2>
+        <div class="nav">
+            <a th:href="@{/dashboard}" class="btn btn-primary">🏠 Dashboard</a>
+            <a th:href="@{/applications/my-applications}" class="btn btn-primary" sec:authorize="hasRole('APPLICANT')">📄 My Applications</a>
+            <a th:href="@{/logout}" class="btn btn-primary">🚪 Logout</a>
         </div>
     </div>
 
-    <div th:if="${#lists.isEmpty(jobs)}" class="no-jobs">
-        <h3>No Jobs Available</h3>
-        <p>There are no job postings at the moment. Please check back later.</p>
-        <a th:href="@{/home}" class="btn btn-primary">Back to Home</a>
+    <div class="content">
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
+        <div class="employer-note" sec:authorize="hasRole('EMPLOYER')">
+            <strong>👋 Employer View:</strong> You can browse jobs but cannot apply. Use your employer dashboard to manage your job postings and applications.
+        </div>
+
+        <div th:if="${not #lists.isEmpty(jobs)}">
+            <div th:each="job : ${jobs}" class="job-card">
+                <h4 th:text="${job.title}">Job Title</h4>
+                <p th:text="${job.description}">Job Description</p>
+                <div class="job-meta">
+                    <span>📍 <span th:text="${job.location}">Location</span></span>
+                    <span>💰 $<span th:text="${job.salary}">Salary</span></span>
+                    <span>👤 <span th:text="${job.employerName}">Employer</span></span>
+                    <span>📊 <span th:text="${job.status}">Status</span></span>
+                </div>
+
+                <div class="apply-form" sec:authorize="hasRole('APPLICANT')">
+                    <form th:action="@{/applications/apply/{jobId}(jobId=${job.id})}" method="post">
+                        <input type="text" name="resumeUrl" placeholder="Paste your resume URL here (e.g., https://drive.google.com/...)" required>
+                        <button type="submit" class="btn btn-success">✅ Apply for this Job</button>
+                    </form>
+                </div>
+
+                <div class="employer-message" sec:authorize="hasRole('EMPLOYER')">
+                    👨‍💼 You are an employer - you cannot apply for jobs
+                </div>
+
+                <div class="login-prompt" sec:authorize="!isAuthenticated()">
+                    <p>🔒 You need to <a th:href="@{/login}">login</a> to apply for this job</p>
+                </div>
+            </div>
+        </div>
+
+        <div th:if="${#lists.isEmpty(jobs)}" class="no-jobs">
+            <h3>No Jobs Available</h3>
+            <p>There are no job postings at the moment. Please check back later.</p>
+            <a th:href="@{/home}" class="btn btn-primary" style="margin-top: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">Back to Home</a>
+        </div>
     </div>
 </div>
 </body>

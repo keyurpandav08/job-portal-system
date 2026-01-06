@@ -2,39 +2,199 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Portal - Home</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
-        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
-        .nav { margin-bottom: 20px; }
-        .btn { padding: 10px 15px; margin: 5px; text-decoration: none; border-radius: 4px; display: inline-block; }
-        .btn-primary { background: #007bff; color: white; }
-        .btn-secondary { background: #6c757d; color: white; }
-        .welcome-section { text-align: center; margin: 30px 0; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .nav {
+            padding: 30px 40px;
+            background: #f8f9fa;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 14px 28px;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        .content {
+            padding: 50px 40px;
+        }
+        
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .welcome-section h2 {
+            font-size: 2.5em;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .welcome-section p {
+            font-size: 1.3em;
+            color: #666;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .feature-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+        
+        .feature-card .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
+        .feature-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>🎯 Job Portal System</h1>
+    <div class="header">
+        <h1>🎯 Job Portal System</h1>
+        <p>Your Gateway to Career Opportunities</p>
+    </div>
 
     <div class="nav">
-        <a th:href="@{/jobs}" class="btn btn-primary">Browse Jobs</a>
-        <a th:href="@{/login}" class="btn btn-primary">Login</a>
-        <a th:href="@{/register}" class="btn btn-primary">Register</a>
+        <a th:href="@{/jobs}" class="btn btn-primary">🔍 Browse Jobs</a>
+        <a th:href="@{/login}" class="btn btn-primary">🔐 Login</a>
+        <a th:href="@{/register}" class="btn btn-primary">✨ Register</a>
     </div>
 
-    <div class="welcome-section">
-        <h3>Welcome to Job Portal!</h3>
-        <p>Find your dream job or post job opportunities</p>
-    </div>
+    <div class="content">
+        <div class="welcome-section">
+            <h2>Welcome to Job Portal!</h2>
+            <p>Find your dream job or post job opportunities</p>
+        </div>
 
-    <h3>Features:</h3>
-    <ul>
-        <li>Employers can post jobs</li>
-        <li>Applicants can apply for jobs</li>
-        <li>Track application status</li>
-        <li>Search and filter jobs</li>
-    </ul>
+        <div class="features">
+            <div class="feature-card">
+                <div class="icon">💼</div>
+                <h3>For Employers</h3>
+                <p>Post job openings and find the perfect candidates for your organization</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="icon">👤</div>
+                <h3>For Applicants</h3>
+                <p>Browse thousands of job opportunities and apply with just a few clicks</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="icon">📊</div>
+                <h3>Track Status</h3>
+                <p>Monitor your application status in real-time and stay updated</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="icon">🔎</div>
+                <h3>Search & Filter</h3>
+                <p>Find the perfect job match using our advanced search and filter options</p>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

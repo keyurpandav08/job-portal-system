@@ -2,131 +2,152 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - Job Portal</title>
-
   <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       min-height: 100vh;
-      margin: 0;
-      background: #f5f5f5;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 20px;
     }
 
     .container {
       width: 100%;
-      max-width: 400px;
-      background: #ffffff;
-      padding: 25px;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      max-width: 450px;
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
     }
 
     h2 {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
+      color: #333;
+      font-size: 2em;
+      font-weight: 700;
     }
 
     .form-group {
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
 
     label {
       display: block;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       font-weight: 600;
+      color: #333;
+      font-size: 14px;
     }
 
     input {
       width: 100%;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      font-size: 14px;
+      padding: 14px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 16px;
+      transition: all 0.3s ease;
     }
 
     input:focus {
       outline: none;
-      border-color: #007bff;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
     }
 
     .btn {
       width: 100%;
-      padding: 10px;
-      background: #007bff;
+      padding: 14px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: #ffffff;
       border: none;
-      border-radius: 4px;
-      font-size: 15px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
       cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
     }
 
     .btn:hover {
-      background: #0056b3;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
     }
 
     .alert {
-      padding: 10px;
-      margin-bottom: 15px;
-      border-radius: 4px;
+      padding: 14px;
+      margin-bottom: 20px;
+      border-radius: 10px;
       font-size: 14px;
+      text-align: center;
     }
 
     .alert-error {
-      background: #f8d7da;
-      color: #721c24;
+      background: #fee;
+      color: #c33;
+      border: 2px solid #fcc;
     }
 
     .alert-success {
-      background: #d4edda;
-      color: #155724;
+      background: #efe;
+      color: #3c3;
+      border: 2px solid #cfc;
     }
 
     .links {
-      margin-top: 15px;
+      margin-top: 25px;
       text-align: center;
       font-size: 14px;
     }
 
     .links a {
-      color: #007bff;
+      color: #667eea;
       text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
     }
 
     .links a:hover {
+      color: #764ba2;
       text-decoration: underline;
+    }
+    
+    .links p {
+        margin: 8px 0;
+        color: #666;
     }
   </style>
 </head>
-
 <body>
 <div class="container">
+  <h2>🔐 Login</h2>
 
-  <h2>Login to Job Portal</h2>
-
-  <!-- Error message -->
   <div th:if="${param.error}" class="alert alert-error">
-    Invalid username or password.
+    Invalid username or password. Please try again.
   </div>
 
-  <!-- Logout success message -->
   <div th:if="${param.logout}" class="alert alert-success">
     You have been logged out successfully.
   </div>
+  
+  <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
 
   <form th:action="@{/login}" method="post">
-    
-    <input type="hidden"
-       th:name="${_csrf.parameterName}"
-       th:value="${_csrf.token}" />
-
     <div class="form-group">
-      <label for="username">Email</label>
-      <input type="email" id="username" name="username"
-             placeholder="Enter your email"
-             required>
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username"
+             placeholder="Enter your username"
+             required autofocus>
     </div>
 
     <div class="form-group">
@@ -141,9 +162,8 @@
 
   <div class="links">
     <p>Don't have an account? <a th:href="@{/register}">Register here</a></p>
-    <p><a th:href="@{/home}">Back to Home</a></p>
+    <p><a th:href="@{/home}">← Back to Home</a></p>
   </div>
-
 </div>
 </body>
 </html>

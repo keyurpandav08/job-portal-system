@@ -2,179 +2,220 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Job Portal</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            background: #f5f5f5;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
         }
+        
         .container {
-            max-width: 500px;
+            max-width: 600px;
             width: 100%;
-            margin: 20px;
             background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
+        
         .form-group {
             margin-bottom: 20px;
         }
+        
         label {
             display: block;
             margin-bottom: 8px;
-            font-weight: bold;
+            font-weight: 600;
             color: #333;
+            font-size: 14px;
         }
+        
         input[type="text"],
         input[type="email"],
         input[type="password"],
+        input[type="tel"],
         select {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            box-sizing: border-box;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
         }
+        
         input:focus, select:focus {
-            border-color: #007bff;
+            border-color: #667eea;
             outline: none;
-            box-shadow: 0 0 5px rgba(0,123,255,0.3);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
+        
         .btn {
-            padding: 12px 20px;
-            background: #007bff;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 16px;
+            font-weight: 600;
             width: 100%;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
+        
         .btn:hover {
-            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
         }
+        
         .alert {
-            padding: 12px;
+            padding: 14px;
             margin: 15px 0;
-            border-radius: 4px;
+            border-radius: 10px;
             text-align: center;
+            font-size: 14px;
         }
+        
         .alert-error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            background: #fee;
+            color: #c33;
+            border: 2px solid #fcc;
         }
+        
         .alert-success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background: #efe;
+            color: #3c3;
+            border: 2px solid #cfc;
         }
+        
         h2 {
             text-align: center;
             color: #333;
             margin-bottom: 30px;
+            font-size: 2em;
+            font-weight: 700;
         }
+        
         .login-link {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 25px;
         }
+        
         .home-link {
             text-align: center;
             margin-bottom: 20px;
         }
+        
+        .home-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .home-link a:hover {
+            text-decoration: underline;
+        }
+        
         small {
             color: #666;
             font-size: 12px;
             display: block;
             margin-top: 5px;
         }
+        
         .form-note {
-            background: #f8f9fa;
-            padding: 10px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            border-left: 4px solid #007bff;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .form-note strong {
+            color: #333;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .form-note p {
+            color: #666;
+            margin: 5px 0;
+            line-height: 1.6;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h2>Create Your Account</h2>
+    <h2>✨ Create Account</h2>
 
     <div class="home-link">
         <a th:href="@{/home}">← Back to Home</a>
     </div>
 
     <div class="form-note">
-        <strong>Choose your role:</strong><br>
-        • <strong>Applicant</strong> - Browse and apply for jobs<br>
-        • <strong>Employer</strong> - Post jobs and manage applications
+        <strong>Choose your role:</strong>
+        <p>• <strong>Applicant</strong> - Browse and apply for jobs</p>
+        <p>• <strong>Employer</strong> - Post jobs and manage applications</p>
     </div>
 
-    <div th:if="${param.error}" class="alert alert-error">
-          Registration failed. Please check your details and try again.
-    </div>
-
-    <div th:if="${param.success}" class="alert alert-success">
-          Registration successful! You can now log in.
-     </div>
-
+    <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
 
     <form th:action="@{/register}" method="post" th:object="${user}">
-        <!-- Basic Information -->
         <div class="form-group">
-            <label for="username">Username: *</label>
+            <label for="username">Username *</label>
             <input type="text" id="username" th:field="*{username}" placeholder="Enter your username" required>
             <small>This will be your login username</small>
         </div>
 
         <div class="form-group">
-            <label for="email">Email Address: *</label>
+            <label for="email">Email Address *</label>
             <input type="email" id="email" th:field="*{email}" placeholder="Enter your email" required>
         </div>
 
         <div class="form-group">
-            <label for="password">Password: *</label>
+            <label for="password">Password *</label>
             <input type="password" id="password" th:field="*{password}" placeholder="Create a password" required>
-            <small>Use a strong password with letters, numbers, and symbols</small>
+            <small>Use a strong password with at least 6 characters</small>
         </div>
 
-        <!-- Personal Details -->
         <div class="form-group">
-            <label for="fullName">Full Name:</label>
+            <label for="fullName">Full Name</label>
             <input type="text" id="fullName" th:field="*{fullName}" placeholder="Enter your full name">
         </div>
 
         <div class="form-group">
-            <label for="phone">Phone Number:</label>
+            <label for="phone">Phone Number</label>
             <input type="tel" id="phone" th:field="*{phone}" placeholder="Enter your phone number">
         </div>
 
-        <!-- Professional Information -->
         <div class="form-group">
-            <label for="skills">Skills:</label>
+            <label for="skills">Skills</label>
             <input type="text" id="skills" th:field="*{skills}" placeholder="e.g., Java, Spring Boot, MySQL, React">
             <small>Separate skills with commas</small>
         </div>
 
         <div class="form-group">
-            <label for="experience">Experience:</label>
+            <label for="experience">Experience</label>
             <input type="text" id="experience" th:field="*{experience}" placeholder="e.g., Fresh Graduate, 2 years, 5+ years">
         </div>
 
-        <!-- Role Selection -->
         <div class="form-group">
-            <label for="role">I want to register as: *</label>
-            <select id="role" th:field="*{role}" required>
+            <label for="role">I want to register as *</label>
+            <select id="role" name="role" required>
                 <option value="">Select your role</option>
                 <option value="1">👤 Applicant - I want to find and apply for jobs</option>
                 <option value="2">💼 Employer - I want to post jobs and hire candidates</option>
@@ -186,12 +227,11 @@
     </form>
 
     <div class="login-link">
-        <p>Already have an account? <a th:href="@{/login}">Login here</a></p>
+        <p>Already have an account? <a th:href="@{/login}" style="color: #667eea; font-weight: 600;">Login here</a></p>
     </div>
 </div>
 
 <script>
-    // Simple client-side validation
     document.querySelector('form').addEventListener('submit', function(e) {
         const password = document.getElementById('password').value;
         const role = document.getElementById('role').value;
