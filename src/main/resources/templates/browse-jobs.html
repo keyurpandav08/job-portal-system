@@ -163,14 +163,18 @@
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             border-radius: 10px;
         }
+
+        .apply-form .form-group {
+            position: relative;
+            margin-bottom: 15px;
+        }
         
         .apply-form input {
             width: 100%;
-            padding: 12px;
+            padding: 12px 40px 12px 12px;
             border: 2px solid #e0e0e0;
             border-radius: 10px;
             font-size: 14px;
-            margin-bottom: 10px;
             transition: all 0.3s ease;
         }
         
@@ -178,6 +182,48 @@
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .apply-form .input-icon {
+            position: absolute;
+            right: 12px;
+            top: 12px;
+            font-size: 18px;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .apply-form input.valid {
+            border-color: #28a745;
+        }
+
+        .apply-form input.valid + .input-icon {
+            color: #28a745;
+        }
+
+        .apply-form input.invalid {
+            border-color: #dc3545;
+        }
+
+        .apply-form input.invalid + .input-icon {
+            color: #dc3545;
+        }
+
+        .apply-form .error-message {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .apply-form .error-message.show {
+            display: block;
+        }
+
+        .apply-form .btn-success:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
         }
         
         .login-prompt {
@@ -264,9 +310,15 @@
                 </div>
 
                 <div class="apply-form" sec:authorize="hasRole('APPLICANT')">
-                    <form th:action="@{/applications/apply/{jobId}(jobId=${job.id})}" method="post">
-                        <input type="text" name="resumeUrl" placeholder="Paste your resume URL here (e.g., https://drive.google.com/...)" required>
-                        <button type="submit" class="btn btn-success">✅ Apply for this Job</button>
+                    <form th:action="@{/applications/apply/{jobId}(jobId=${job.id})}" method="post" class="application-form">
+                        <div class="form-group">
+                            <input type="text" name="resumeUrl" class="resume-url-input" 
+                                   placeholder="Paste your resume URL here (e.g., https://drive.google.com/...)" 
+                                   required>
+                            <span class="input-icon">🔗</span>
+                            <div class="error-message resume-error"></div>
+                        </div>
+                        <button type="submit" class="btn btn-success apply-submit-btn" disabled>✅ Apply for this Job</button>
                     </form>
                 </div>
 
@@ -287,5 +339,66 @@
         </div>
     </div>
 </div>
+
+<script>
+    (function() {
+        // Validate all application forms on the page
+        const applicationForms = document.querySelectorAll('.application-form');
+        
+        applicationForms.forEach(function(form) {
+            const resumeInput = form.querySelector('.resume-url-input');
+            const submitBtn = form.querySelector('.apply-submit-btn');
+            const errorEl = form.querySelector('.resume-error');
+
+            function validateResumeUrl() {
+                const value = resumeInput.value.trim();
+                const urlRegex = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+                
+                if (value === '') {
+                    resumeInput.classList.add('invalid');
+                    resumeInput.classList.remove('valid');
+                    errorEl.textContent = 'Resume URL is required';
+                    errorEl.classList.add('show');
+                    return false;
+                } else if (!urlRegex.test(value)) {
+                    resumeInput.classList.add('invalid');
+                    resumeInput.classList.remove('valid');
+                    errorEl.textContent = 'Please enter a valid URL (e.g., https://drive.google.com/...)';
+                    errorEl.classList.add('show');
+                    return false;
+                } else {
+                    resumeInput.classList.add('valid');
+                    resumeInput.classList.remove('invalid');
+                    errorEl.classList.remove('show');
+                    return true;
+                }
+            }
+
+            function validateForm() {
+                const isValid = validateResumeUrl();
+                submitBtn.disabled = !isValid;
+                return isValid;
+            }
+
+            resumeInput.addEventListener('blur', validateResumeUrl);
+            resumeInput.addEventListener('input', function() {
+                if (resumeInput.classList.contains('invalid')) {
+                    validateResumeUrl();
+                }
+                validateForm();
+            });
+
+            form.addEventListener('submit', function(e) {
+                if (!validateForm()) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+
+            // Initial validation
+            validateForm();
+        });
+    })();
+</script>
 </body>
 </html>
