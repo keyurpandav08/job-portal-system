@@ -26,6 +26,9 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        // Swagger / OpenAPI
+                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        
                         .requestMatchers("/", "/home", "/register", "/css/**", "/js/**", "/images/**", "/login", "/jobs").permitAll()
                         .requestMatchers("/dashboard/user/**", "/applications/**").hasRole("APPLICANT")
                         .requestMatchers("/dashboard/employer/**", "/employer/**").hasRole("EMPLOYER")
