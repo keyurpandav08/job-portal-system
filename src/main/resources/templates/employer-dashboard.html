@@ -129,6 +129,7 @@
     
     .form-group {
       margin-bottom: 20px;
+      position: relative;
     }
     
     .form-group label {
@@ -138,10 +139,15 @@
       color: #333;
       font-size: 14px;
     }
+
+    .form-group label.required::after {
+      content: ' *';
+      color: #dc3545;
+    }
     
     input, textarea {
       width: 100%;
-      padding: 14px;
+      padding: 14px 40px 14px 14px;
       border: 2px solid #e0e0e0;
       border-radius: 10px;
       font-size: 16px;
@@ -153,6 +159,52 @@
       outline: none;
       border-color: #667eea;
       box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .input-icon {
+      position: absolute;
+      right: 12px;
+      top: 42px;
+      font-size: 18px;
+      pointer-events: none;
+      transition: all 0.3s ease;
+    }
+
+    textarea + .input-icon {
+      top: 52px;
+    }
+
+    input.valid, textarea.valid {
+      border-color: #28a745;
+    }
+
+    input.valid + .input-icon, textarea.valid + .input-icon {
+      color: #28a745;
+    }
+
+    input.invalid, textarea.invalid {
+      border-color: #dc3545;
+    }
+
+    input.invalid + .input-icon, textarea.invalid + .input-icon {
+      color: #dc3545;
+    }
+
+    .error-message {
+      color: #dc3545;
+      font-size: 12px;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    .btn-success:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
     }
     
     textarea {
@@ -285,26 +337,185 @@
 
     <div class="form-section">
       <h3>📝 Post New Job</h3>
-      <form th:action="@{/dashboard/employer/jobs}" method="post" th:object="${newJob}">
+      <form th:action="@{/dashboard/employer/jobs}" method="post" th:object="${newJob}" id="jobForm">
         <div class="form-group">
-          <label for="title">Job Title *</label>
+          <label for="title" class="required">Job Title</label>
           <input type="text" id="title" th:field="*{title}" placeholder="e.g., Senior Software Engineer" required>
+          <span class="input-icon">💼</span>
+          <div class="error-message" id="titleError"></div>
         </div>
         <div class="form-group">
-          <label for="description">Job Description *</label>
+          <label for="description" class="required">Job Description</label>
           <textarea id="description" th:field="*{description}" placeholder="Describe the job requirements, responsibilities, and qualifications..." required></textarea>
+          <span class="input-icon">📝</span>
+          <div class="error-message" id="descriptionError"></div>
         </div>
         <div class="form-group">
-          <label for="location">Location *</label>
+          <label for="location" class="required">Location</label>
           <input type="text" id="location" th:field="*{location}" placeholder="e.g., New York, NY or Remote" required>
+          <span class="input-icon">📍</span>
+          <div class="error-message" id="locationError"></div>
         </div>
         <div class="form-group">
-          <label for="salary">Salary *</label>
-          <input type="number" id="salary" th:field="*{salary}" placeholder="e.g., 75000" step="0.01" required>
+          <label for="salary" class="required">Salary</label>
+          <input type="number" id="salary" th:field="*{salary}" placeholder="e.g., 75000" step="0.01" min="0" required>
+          <span class="input-icon">💰</span>
+          <div class="error-message" id="salaryError"></div>
         </div>
-        <button type="submit" class="btn btn-success">✅ Post Job</button>
+        <button type="submit" class="btn btn-success" id="submitBtn" disabled>✅ Post Job</button>
       </form>
     </div>
+
+    <script>
+      (function() {
+        const form = document.getElementById('jobForm');
+        const title = document.getElementById('title');
+        const description = document.getElementById('description');
+        const location = document.getElementById('location');
+        const salary = document.getElementById('salary');
+        const submitBtn = document.getElementById('submitBtn');
+
+        function validateTitle() {
+          const value = title.value.trim();
+          const errorEl = document.getElementById('titleError');
+          if (value === '') {
+            title.classList.add('invalid');
+            title.classList.remove('valid');
+            errorEl.textContent = 'Job title is required';
+            errorEl.classList.add('show');
+            return false;
+          } else if (value.length < 3) {
+            title.classList.add('invalid');
+            title.classList.remove('valid');
+            errorEl.textContent = 'Job title must be at least 3 characters';
+            errorEl.classList.add('show');
+            return false;
+          } else {
+            title.classList.add('valid');
+            title.classList.remove('invalid');
+            errorEl.classList.remove('show');
+            return true;
+          }
+        }
+
+        function validateDescription() {
+          const value = description.value.trim();
+          const errorEl = document.getElementById('descriptionError');
+          if (value === '') {
+            description.classList.add('invalid');
+            description.classList.remove('valid');
+            errorEl.textContent = 'Job description is required';
+            errorEl.classList.add('show');
+            return false;
+          } else if (value.length < 20) {
+            description.classList.add('invalid');
+            description.classList.remove('valid');
+            errorEl.textContent = 'Job description must be at least 20 characters';
+            errorEl.classList.add('show');
+            return false;
+          } else {
+            description.classList.add('valid');
+            description.classList.remove('invalid');
+            errorEl.classList.remove('show');
+            return true;
+          }
+        }
+
+        function validateLocation() {
+          const value = location.value.trim();
+          const errorEl = document.getElementById('locationError');
+          if (value === '') {
+            location.classList.add('invalid');
+            location.classList.remove('valid');
+            errorEl.textContent = 'Location is required';
+            errorEl.classList.add('show');
+            return false;
+          } else if (value.length < 2) {
+            location.classList.add('invalid');
+            location.classList.remove('valid');
+            errorEl.textContent = 'Location must be at least 2 characters';
+            errorEl.classList.add('show');
+            return false;
+          } else {
+            location.classList.add('valid');
+            location.classList.remove('invalid');
+            errorEl.classList.remove('show');
+            return true;
+          }
+        }
+
+        function validateSalary() {
+          const value = parseFloat(salary.value);
+          const errorEl = document.getElementById('salaryError');
+          if (isNaN(value) || salary.value.trim() === '') {
+            salary.classList.add('invalid');
+            salary.classList.remove('valid');
+            errorEl.textContent = 'Salary is required';
+            errorEl.classList.add('show');
+            return false;
+          } else if (value <= 0) {
+            salary.classList.add('invalid');
+            salary.classList.remove('valid');
+            errorEl.textContent = 'Salary must be greater than 0';
+            errorEl.classList.add('show');
+            return false;
+          } else {
+            salary.classList.add('valid');
+            salary.classList.remove('invalid');
+            errorEl.classList.remove('show');
+            return true;
+          }
+        }
+
+        function validateForm() {
+          const isValid = validateTitle() && validateDescription() && 
+                         validateLocation() && validateSalary();
+          submitBtn.disabled = !isValid;
+          return isValid;
+        }
+
+        title.addEventListener('blur', validateTitle);
+        title.addEventListener('input', function() {
+          if (title.classList.contains('invalid')) {
+            validateTitle();
+          }
+          validateForm();
+        });
+
+        description.addEventListener('blur', validateDescription);
+        description.addEventListener('input', function() {
+          if (description.classList.contains('invalid')) {
+            validateDescription();
+          }
+          validateForm();
+        });
+
+        location.addEventListener('blur', validateLocation);
+        location.addEventListener('input', function() {
+          if (location.classList.contains('invalid')) {
+            validateLocation();
+          }
+          validateForm();
+        });
+
+        salary.addEventListener('blur', validateSalary);
+        salary.addEventListener('input', function() {
+          if (salary.classList.contains('invalid')) {
+            validateSalary();
+          }
+          validateForm();
+        });
+
+        form.addEventListener('submit', function(e) {
+          if (!validateForm()) {
+            e.preventDefault();
+            return false;
+          }
+        });
+
+        validateForm();
+      })();
+    </script>
 
     <h3 class="section-title">📋 My Job Postings</h3>
     

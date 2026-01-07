@@ -33,6 +33,7 @@
         
         .form-group {
             margin-bottom: 20px;
+            position: relative;
         }
         
         label {
@@ -43,13 +44,18 @@
             font-size: 14px;
         }
         
+        label.required::after {
+            content: ' *';
+            color: #dc3545;
+        }
+        
         input[type="text"],
         input[type="email"],
         input[type="password"],
         input[type="tel"],
         select {
             width: 100%;
-            padding: 14px;
+            padding: 14px 40px 14px 14px;
             border: 2px solid #e0e0e0;
             border-radius: 10px;
             font-size: 16px;
@@ -60,6 +66,76 @@
             border-color: #667eea;
             outline: none;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 12px;
+            top: 42px;
+            font-size: 18px;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        input.valid, select.valid {
+            border-color: #28a745;
+        }
+
+        input.valid + .input-icon, select.valid + .input-icon {
+            color: #28a745;
+        }
+
+        input.invalid, select.invalid {
+            border-color: #dc3545;
+        }
+
+        input.invalid + .input-icon, select.invalid + .input-icon {
+            color: #dc3545;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .password-strength {
+            margin-top: 5px;
+            font-size: 12px;
+        }
+
+        .password-strength span {
+            display: inline-block;
+            margin-right: 5px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 11px;
+        }
+
+        .strength-weak {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .strength-medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .strength-strong {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
         }
         
         .btn {
@@ -174,56 +250,70 @@
     <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
     <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
 
-    <form th:action="@{/register}" method="post" th:object="${user}">
+    <form th:action="@{/register}" method="post" th:object="${user}" id="registerForm">
         <div class="form-group">
-            <label for="username">Username *</label>
+            <label for="username" class="required">Username</label>
             <input type="text" id="username" th:field="*{username}" placeholder="Enter your username" required>
+            <span class="input-icon">👤</span>
             <small>This will be your login username</small>
+            <div class="error-message" id="usernameError"></div>
         </div>
 
         <div class="form-group">
-            <label for="email">Email Address *</label>
+            <label for="email" class="required">Email Address</label>
             <input type="email" id="email" th:field="*{email}" placeholder="Enter your email" required>
+            <span class="input-icon">📧</span>
+            <div class="error-message" id="emailError"></div>
         </div>
 
         <div class="form-group">
-            <label for="password">Password *</label>
+            <label for="password" class="required">Password</label>
             <input type="password" id="password" th:field="*{password}" placeholder="Create a password" required>
+            <span class="input-icon">🔒</span>
             <small>Use a strong password with at least 6 characters</small>
+            <div class="password-strength" id="passwordStrength"></div>
+            <div class="error-message" id="passwordError"></div>
         </div>
 
         <div class="form-group">
             <label for="fullName">Full Name</label>
             <input type="text" id="fullName" th:field="*{fullName}" placeholder="Enter your full name">
+            <span class="input-icon">👤</span>
         </div>
 
         <div class="form-group">
             <label for="phone">Phone Number</label>
             <input type="tel" id="phone" th:field="*{phone}" placeholder="Enter your phone number">
+            <span class="input-icon">📱</span>
+            <div class="error-message" id="phoneError"></div>
         </div>
 
         <div class="form-group">
             <label for="skills">Skills</label>
             <input type="text" id="skills" th:field="*{skills}" placeholder="e.g., Java, Spring Boot, MySQL, React">
+            <span class="input-icon">💼</span>
             <small>Separate skills with commas</small>
         </div>
 
         <div class="form-group">
             <label for="experience">Experience</label>
             <input type="text" id="experience" th:field="*{experience}" placeholder="e.g., Fresh Graduate, 2 years, 5+ years">
+            <span class="input-icon">📊</span>
         </div>
 
         <div class="form-group">
-            <label for="role">I want to register as *</label>
+            <label for="role" class="required">I want to register as</label>
             <select id="role" name="role" required>
                 <option value="">Select your role</option>
                 <option value="1">👤 Applicant - I want to find and apply for jobs</option>
                 <option value="2">💼 Employer - I want to post jobs and hire candidates</option>
             </select>
+            <span class="input-icon">🎭</span>
             <small>Choose carefully as this determines your dashboard features</small>
+            <div class="error-message" id="roleError"></div>
         </div>
 
-        <button type="submit" class="btn">Create Account</button>
+        <button type="submit" class="btn" id="submitBtn" disabled>Create Account</button>
     </form>
 
     <div class="login-link">
@@ -232,22 +322,214 @@
 </div>
 
 <script>
-    document.querySelector('form').addEventListener('submit', function(e) {
-        const password = document.getElementById('password').value;
-        const role = document.getElementById('role').value;
+    (function() {
+        const form = document.getElementById('registerForm');
+        const username = document.getElementById('username');
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        const phone = document.getElementById('phone');
+        const role = document.getElementById('role');
+        const submitBtn = document.getElementById('submitBtn');
+        const passwordStrength = document.getElementById('passwordStrength');
 
-        if (!role) {
-            alert('Please select your role (Applicant or Employer)');
-            e.preventDefault();
-            return;
+        function validateUsername() {
+            const value = username.value.trim();
+            const errorEl = document.getElementById('usernameError');
+            if (value === '') {
+                username.classList.add('invalid');
+                username.classList.remove('valid');
+                errorEl.textContent = 'Username is required';
+                errorEl.classList.add('show');
+                return false;
+            } else if (value.length < 3) {
+                username.classList.add('invalid');
+                username.classList.remove('valid');
+                errorEl.textContent = 'Username must be at least 3 characters';
+                errorEl.classList.add('show');
+                return false;
+            } else if (!/^[a-zA-Z0-9_]+$/.test(value)) {
+                username.classList.add('invalid');
+                username.classList.remove('valid');
+                errorEl.textContent = 'Username can only contain letters, numbers, and underscores';
+                errorEl.classList.add('show');
+                return false;
+            } else {
+                username.classList.add('valid');
+                username.classList.remove('invalid');
+                errorEl.classList.remove('show');
+                return true;
+            }
         }
 
-        if (password.length < 6) {
-            alert('Password should be at least 6 characters long');
-            e.preventDefault();
-            return;
+        function validateEmail() {
+            const value = email.value.trim();
+            const errorEl = document.getElementById('emailError');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (value === '') {
+                email.classList.add('invalid');
+                email.classList.remove('valid');
+                errorEl.textContent = 'Email is required';
+                errorEl.classList.add('show');
+                return false;
+            } else if (!emailRegex.test(value)) {
+                email.classList.add('invalid');
+                email.classList.remove('valid');
+                errorEl.textContent = 'Please enter a valid email address';
+                errorEl.classList.add('show');
+                return false;
+            } else {
+                email.classList.add('valid');
+                email.classList.remove('invalid');
+                errorEl.classList.remove('show');
+                return true;
+            }
         }
-    });
+
+        function checkPasswordStrength(value) {
+            let strength = 0;
+            if (value.length >= 6) strength++;
+            if (value.length >= 8) strength++;
+            if (/[a-z]/.test(value)) strength++;
+            if (/[A-Z]/.test(value)) strength++;
+            if (/[0-9]/.test(value)) strength++;
+            if (/[^a-zA-Z0-9]/.test(value)) strength++;
+            return strength;
+        }
+
+        function validatePassword() {
+            const value = password.value;
+            const errorEl = document.getElementById('passwordError');
+            const strength = checkPasswordStrength(value);
+            
+            passwordStrength.innerHTML = '';
+            if (value.length > 0) {
+                let strengthText = '';
+                let strengthClass = '';
+                if (strength <= 2) {
+                    strengthText = 'Weak';
+                    strengthClass = 'strength-weak';
+                } else if (strength <= 4) {
+                    strengthText = 'Medium';
+                    strengthClass = 'strength-medium';
+                } else {
+                    strengthText = 'Strong';
+                    strengthClass = 'strength-strong';
+                }
+                passwordStrength.innerHTML = '<span class="' + strengthClass + '">' + strengthText + '</span>';
+            }
+
+            if (value === '') {
+                password.classList.add('invalid');
+                password.classList.remove('valid');
+                errorEl.textContent = 'Password is required';
+                errorEl.classList.add('show');
+                return false;
+            } else if (value.length < 6) {
+                password.classList.add('invalid');
+                password.classList.remove('valid');
+                errorEl.textContent = 'Password must be at least 6 characters';
+                errorEl.classList.add('show');
+                return false;
+            } else {
+                password.classList.add('valid');
+                password.classList.remove('invalid');
+                errorEl.classList.remove('show');
+                return true;
+            }
+        }
+
+        function validatePhone() {
+            const value = phone.value.trim();
+            const errorEl = document.getElementById('phoneError');
+            if (value === '') {
+                phone.classList.remove('invalid', 'valid');
+                errorEl.classList.remove('show');
+                return true; // Optional field
+            }
+            const phoneRegex = /^[\d\s\-\+\(\)]+$/;
+            if (!phoneRegex.test(value) || value.length < 10) {
+                phone.classList.add('invalid');
+                phone.classList.remove('valid');
+                errorEl.textContent = 'Please enter a valid phone number';
+                errorEl.classList.add('show');
+                return false;
+            } else {
+                phone.classList.add('valid');
+                phone.classList.remove('invalid');
+                errorEl.classList.remove('show');
+                return true;
+            }
+        }
+
+        function validateRole() {
+            const value = role.value;
+            const errorEl = document.getElementById('roleError');
+            if (value === '') {
+                role.classList.add('invalid');
+                role.classList.remove('valid');
+                errorEl.textContent = 'Please select your role';
+                errorEl.classList.add('show');
+                return false;
+            } else {
+                role.classList.add('valid');
+                role.classList.remove('invalid');
+                errorEl.classList.remove('show');
+                return true;
+            }
+        }
+
+        function validateForm() {
+            const isValid = validateUsername() && validateEmail() && 
+                           validatePassword() && validatePhone() && validateRole();
+            submitBtn.disabled = !isValid;
+            return isValid;
+        }
+
+        username.addEventListener('blur', validateUsername);
+        username.addEventListener('input', function() {
+            if (username.classList.contains('invalid')) {
+                validateUsername();
+            }
+            validateForm();
+        });
+
+        email.addEventListener('blur', validateEmail);
+        email.addEventListener('input', function() {
+            if (email.classList.contains('invalid')) {
+                validateEmail();
+            }
+            validateForm();
+        });
+
+        password.addEventListener('blur', validatePassword);
+        password.addEventListener('input', function() {
+            validatePassword();
+            validateForm();
+        });
+
+        phone.addEventListener('blur', validatePhone);
+        phone.addEventListener('input', function() {
+            if (phone.classList.contains('invalid')) {
+                validatePhone();
+            }
+            validateForm();
+        });
+
+        role.addEventListener('change', function() {
+            validateRole();
+            validateForm();
+        });
+
+        form.addEventListener('submit', function(e) {
+            if (!validateForm()) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // Initial validation
+        validateForm();
+    })();
 </script>
 </body>
 </html>
