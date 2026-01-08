@@ -12,7 +12,7 @@ const JobList = () => {
         const fetchJobs = async () => {
             try {
                 const response = await api.get('/job');
-                setJobs(response.data);
+                setJobs(Array.isArray(response.data) ? response.data : []);
             } catch (err) {
                 console.error(err);
                 setError('Failed to load jobs. Please try again later.');
