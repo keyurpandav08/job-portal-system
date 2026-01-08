@@ -46,4 +46,9 @@ public class UserController {
     public UserDto byEmail(@PathVariable String email){ 
         return userService.getByEmail(email); 
     }
+
+    @GetMapping("/username/{username}")
+    public UserDto byUsername(@PathVariable String username){
+        return UserDto.toDto(userService.getUserByUsername(username));
+    }
 }
