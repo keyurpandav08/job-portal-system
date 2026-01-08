@@ -13,8 +13,8 @@ const Layout = () => {
                 zIndex: 50
             }}>
                 <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Link to="/" style={{ fontSize: '1.25rem', fontWeight: 'bold', color: 'var(--primary)' }}>
-                        JobPortal
+                    <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}>
+                        <img src="/logo.png" alt="CareerLink" style={{ height: '70px', width: 'auto' }} />
                     </Link>
                     <nav style={{ display: 'flex', gap: '1rem' }}>
                         <Link to="/">Home</Link>

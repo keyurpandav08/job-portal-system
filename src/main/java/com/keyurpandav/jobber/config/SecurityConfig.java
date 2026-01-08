@@ -35,7 +35,8 @@ public class SecurityConfig {
                         // Swagger / OpenAPI
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         
-                        .requestMatchers("/", "/home", "/register", "/css/**", "/js/**", "/images/**", "/login", "/jobs", "/users/register").permitAll()
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/job", "/job/**").permitAll()
+                        .requestMatchers("/", "/home", "/register", "/css/**", "/js/**", "/images/**", "/login", "/users/register").permitAll()
                         .requestMatchers("/dashboard/user/**", "/applications/**").hasRole("APPLICANT")
                         .requestMatchers("/dashboard/employer/**", "/employer/**").hasRole("EMPLOYER")
                         .anyRequest().authenticated()

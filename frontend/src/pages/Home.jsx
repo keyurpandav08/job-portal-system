@@ -71,7 +71,7 @@ const Home = () => {
             {/* Features Section */}
             <section className="features-section">
                 <div className="container">
-                    <h2 className="section-title">Why Choose JobPortal?</h2>
+                    <h2 className="section-title">Why Choose CareerLink?</h2>
                     <p className="section-subtitle">
                         We provide the tools you need to stand out and get hired faster than ever before.
                     </p>
@@ -110,20 +110,24 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* About/CTA Section */}
+            {/* About / CTA Section */}
             <section className="about-section">
                 <div className="container">
                     <div className="cta-box">
                         <h2 className="cta-title">Ready to shape your future?</h2>
-                        <p style={{ fontSize: '1.25rem', opacity: 0.9, marginBottom: '2rem' }}>
+
+                        <p className="cta-subtitle">
                             Join thousands of professionals finding their dream jobs daily.
                         </p>
-                        <Link to="/register" className="cta-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-                            Create Free Account <ArrowRight size={20} />
+
+                        <Link to="/register" className="cta-btn">
+                            Create Free Account
+                            <ArrowRight size={20} />
                         </Link>
                     </div>
                 </div>
             </section>
+
         </div>
     );
 };
