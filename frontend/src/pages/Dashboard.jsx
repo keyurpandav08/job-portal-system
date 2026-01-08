@@ -7,6 +7,7 @@ const Dashboard = () => {
     const { user, logout } = useAuth();
     const [profile, setProfile] = useState(null);
     const [myJobs, setMyJobs] = useState([]);
+    const [myApplications, setMyApplications] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
@@ -23,6 +24,14 @@ const Dashboard = () => {
                 if (res.data.roleName === 'EMPLOYER') {
                     const jobsRes = await api.get(`/job/user/${res.data.id}`);
                     setMyJobs(jobsRes.data);
+                } else {
+                    // If Applicant, fetch applications
+                    try {
+                        const appsRes = await api.get(`/applications/user/${res.data.id}`);
+                        setMyApplications(appsRes.data);
+                    } catch (appErr) {
+                        console.warn("Failed to fetch applications", appErr);
+                    }
                 }
             } catch (err) {
                 console.error(err);
