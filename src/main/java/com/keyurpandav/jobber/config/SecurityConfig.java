@@ -7,6 +7,11 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 public class SecurityConfig {
@@ -24,9 +29,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/home", "/register", "/css/**", "/js/**", "/images/**", "/login", "/jobs").permitAll()
+                        // Swagger / OpenAPI
+                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        
+                        .requestMatchers("/", "/home", "/register", "/css/**", "/js/**", "/images/**", "/login", "/jobs", "/users/register").permitAll()
                         .requestMatchers("/dashboard/user/**", "/applications/**").hasRole("APPLICANT")
                         .requestMatchers("/dashboard/employer/**", "/employer/**").hasRole("EMPLOYER")
                         .anyRequest().authenticated()
@@ -34,8 +43,16 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/dashboard")
-                        .failureUrl("/login?error=true")
+                        .successHandler((request, response, authentication) -> {
+                            response.setStatus(200); // OK
+                            response.setContentType("application/json");
+                            response.getWriter().write("{\"message\": \"Login successful\"}");
+                        })
+                        .failureHandler((request, response, exception) -> {
+                            response.setStatus(401); // Unauthorized
+                            response.setContentType("application/json");
+                            response.getWriter().write("{\"error\": \"Login failed\"}");
+                        })
                         .permitAll()
                 )
                 .logout(logout -> logout
@@ -45,5 +62,17 @@ public class SecurityConfig {
                 );
 
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
