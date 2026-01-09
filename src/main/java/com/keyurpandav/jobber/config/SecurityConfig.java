@@ -35,14 +35,16 @@ public class SecurityConfig {
                         // Swagger / OpenAPI
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         
+                        // Public API endpoints
                         .requestMatchers(org.springframework.http.HttpMethod.GET, "/job", "/job/**").permitAll()
-                        .requestMatchers("/", "/home", "/register", "/css/**", "/js/**", "/images/**", "/login", "/users/register").permitAll()
-                        .requestMatchers("/dashboard/user/**", "/applications/**").hasRole("APPLICANT")
-                        .requestMatchers("/dashboard/employer/**", "/employer/**").hasRole("EMPLOYER")
+                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/users/register").permitAll()
+                        
+                        // Role-based API access
+                        .requestMatchers("/applications/**").hasRole("APPLICANT")
+                        .requestMatchers("/dashboard/**", "/employer/**").hasRole("EMPLOYER")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login")
                         .loginProcessingUrl("/login")
                         .successHandler((request, response, authentication) -> {
                             response.setStatus(200); // OK
@@ -58,7 +60,11 @@ public class SecurityConfig {
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/home?logout=true")
+                        .logoutSuccessHandler((request, response, authentication) -> {
+                            response.setStatus(200);
+                            response.setContentType("application/json");
+                            response.getWriter().write("{\"message\": \"Logout successful\"}");
+                        })
                         .permitAll()
                 );
 
