@@ -7,7 +7,12 @@ import lombok.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "application")
+@Table(
+    name = "application",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"job_id", "applicant_id"})
+    }
+)
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor

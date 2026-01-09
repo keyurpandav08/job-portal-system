@@ -39,7 +39,7 @@ public class ApplicationService {
 
         applicationRepository.findByApplicantAndJob(user, job)
                 .ifPresent(existing -> {
-                    throw new IllegalArgumentException("You have already applied for this job.");
+                    throw new IllegalStateException("You have already applied for this job.");
                 });
 
         application.setApplicant(user);
