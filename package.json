@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "lucide-react": "^0.562.0",
+    "react-hot-toast": "^2.6.0"
+  }
+}
