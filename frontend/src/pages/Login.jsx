@@ -1,5 +1,7 @@
-import { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { User, Lock, LogIn } from 'lucide-react';
+import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 
@@ -8,14 +10,7 @@ const Login = () => {
     const location = useLocation();
     const { login } = useAuth();
 
-    // Check if we were redirected with a message (e.g., from Register)
-    const [message, setMessage] = useState(location.state?.message || '');
-
-    const [formData, setFormData] = useState({
-        username: '',
-        password: ''
-    });
-    const [error, setError] = useState('');
+    const [formData, setFormData] = useState({ username: '', password: '' });
     const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
@@ -25,24 +20,18 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        setError('');
 
         try {
-            // Spring Security formLogin expects x-www-form-urlencoded body
+            // Spring Security x-www-form-urlencoded logic
             const params = new URLSearchParams();
             params.append('username', formData.username);
             params.append('password', formData.password);
 
-            // Simple Axios POST now works because Backend allows CORS.
-            // Credentials (Cookies) are handled automatically by withCredentials: true in api.js
             await api.post('/login', params, {
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
             });
 
-            // Login Success (Backend status 200 or 302 handled by Axios usually)
-
             // Fetch Profile
-            // Fetch Profile using the new endpoint
             try {
                 const userRes = await api.get(`/users/username/${formData.username}`);
                 const currentUser = userRes.data;
@@ -52,93 +41,65 @@ const Login = () => {
                     username: currentUser.username,
                     role: { name: currentUser.roleName }
                 });
+                toast.success(`Welcome back, ${currentUser.username}!`);
                 navigate('/dashboard');
             } catch (profileErr) {
-                console.error("Profile fetch failed", profileErr);
                 login({ username: formData.username, role: { name: 'APPLICANT' } });
                 navigate('/dashboard');
             }
-
         } catch (err) {
-            console.error(err);
-            setError('Invalid username or password');
+            toast.error('Invalid username or password');
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div style={{ maxWidth: '400px', margin: '4rem auto', padding: '0 1rem' }}>
-            <div style={{
-                backgroundColor: 'var(--surface)',
-                padding: '2rem',
-                borderRadius: '1rem',
-                boxShadow: 'var(--shadow-md)',
-                border: '1px solid var(--border)'
-            }}>
-                <h2 style={{ textAlign: 'center', marginBottom: '2rem', fontSize: '2rem', fontWeight: 'bold' }}>Welcome Back</h2>
+        <div className="container py-5 d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
+            <div className="bg-white p-4 p-md-5 rounded-4 border border-slate-200 shadow-lg" style={{ maxWidth: '400px', width: '100%' }}>
+                <div className="text-center mb-4">
+                    <h2 className="fw-bold text-slate-900">Sign In</h2>
+                    <p className="text-muted small">Access your professional dashboard</p>
+                </div>
 
-                {message && (
-                    <div style={{
-                        backgroundColor: '#dcfce7',
-                        color: '#166534',
-                        padding: '0.75rem',
-                        borderRadius: '0.5rem',
-                        marginBottom: '1.5rem',
-                        textAlign: 'center'
-                    }}>
-                        {message}
-                    </div>
-                )}
-
-                {error && (
-                    <div style={{
-                        backgroundColor: '#fee2e2',
-                        color: '#ef4444',
-                        padding: '0.75rem',
-                        borderRadius: '0.5rem',
-                        marginBottom: '1.5rem',
-                        textAlign: 'center'
-                    }}>
-                        {error}
-                    </div>
-                )}
-
-                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                <form onSubmit={handleSubmit} className="d-flex flex-column gap-3">
                     <div>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Username</label>
-                        <input
-                            type="text"
-                            name="username"
-                            value={formData.username}
-                            onChange={handleChange}
-                            required
-                            style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border)' }}
-                        />
+                        <label className="form-label fw-semibold small text-slate-700">Username</label>
+                        <div className="input-group">
+                            <span className="input-group-text bg-light border-slate-200"><User size={18} className="text-muted" /></span>
+                            <input
+                                type="text"
+                                name="username"
+                                className="form-control border-slate-200"
+                                value={formData.username}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
                     </div>
+
                     <div>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Password</label>
-                        <input
-                            type="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            required
-                            style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border)' }}
-                        />
+                        <label className="form-label fw-semibold small text-slate-700">Password</label>
+                        <div className="input-group">
+                            <span className="input-group-text bg-light border-slate-200"><Lock size={18} className="text-muted" /></span>
+                            <input
+                                type="password"
+                                name="password"
+                                className="form-control border-slate-200"
+                                value={formData.password}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
                     </div>
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className="btn-primary-glow"
-                        style={{ width: '100%', padding: '1rem', marginTop: '1rem' }}
-                    >
-                        {loading ? 'Logging in...' : 'Sign In'}
+
+                    <button type="submit" disabled={loading} className="btn btn-primary w-100 py-3 fw-bold mt-2">
+                        {loading ? 'Authenticating...' : <><LogIn size={18} className="me-2" /> Sign In</>}
                     </button>
                 </form>
 
-                <p style={{ textAlign: 'center', marginTop: '1.5rem', color: 'var(--text-secondary)' }}>
-                    Don't have an account? <Link to="/register" style={{ color: 'var(--primary)', fontWeight: '600' }}>Register here</Link>
+                <p className="text-center mt-4 text-muted small">
+                    New here? <Link to="/register" className="text-primary fw-bold text-decoration-none">Create an account</Link>
                 </p>
             </div>
         </div>

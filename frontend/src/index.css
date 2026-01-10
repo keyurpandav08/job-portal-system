@@ -1,17 +1,24 @@
 :root {
-  /* Light Theme Colors */
+  /* Core Colors */
   --primary: #0e7490;
-  /* Teal-700 (Link color) */
   --primary-hover: #155e75;
   --secondary: #0f172a;
-  /* Navy (Career color) */
   --accent: #f97316;
-  /* Orange (Arrow color) */
+
+  /* Extended Palette (from main) */
+  --primary-blue: #2563eb;
+  --accent-emerald: #10b981;
+  --dark-slate: #1e293b;
+  --light-bg: #f8fafc;
+
+  /* Surfaces & Text */
   --background: #f8fafc;
   --surface: #ffffff;
   --text-main: #0f172a;
   --text-secondary: #475569;
   --border: #e2e8f0;
+
+  /* Status */
   --danger: #ef4444;
   --success: #22c55e;
 
@@ -30,6 +37,9 @@
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;
 
+  /* Transitions */
+  --transition-smooth: all 0.3s ease-in-out;
+
   /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
@@ -39,28 +49,19 @@
 /* Dark Theme */
 .dark-theme {
   --primary: #06b6d4;
-  /* Cyan-500 - brighter for dark mode */
   --primary-hover: #0891b2;
   --secondary: #e2e8f0;
-  /* Light text for dark bg */
   --accent: #fb923c;
-  /* Lighter orange for dark mode */
-  --background: #0f172a;
-  /* Dark navy */
-  --surface: #1e293b;
-  /* Slate-800 */
-  --text-main: #f1f5f9;
-  /* Light text */
-  --text-secondary: #cbd5e1;
-  /* Lighter secondary text */
-  --border: #334155;
-  /* Darker border */
-  --danger: #f87171;
-  /* Lighter red for dark mode */
-  --success: #4ade80;
-  /* Lighter green for dark mode */
 
-  /* Dark mode shadows */
+  --background: #0f172a;
+  --surface: #1e293b;
+  --text-main: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --border: #334155;
+
+  --danger: #f87171;
+  --success: #4ade80;
+
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5);
@@ -77,8 +78,8 @@
 }
 
 body {
-  font-family: var(--font-sans);
   background-color: var(--background);
+  font-family: var(--font-sans);
   color: var(--text-main);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
@@ -108,6 +109,10 @@ img {
   padding: 0 var(--spacing-md);
 }
 
+.text-center { text-align: center; }
+.mt-4 { margin-top: 1rem; }
+
+/* Buttons */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -115,22 +120,64 @@ img {
   padding: 0.5rem 1rem;
   border-radius: var(--radius-md);
   font-weight: 500;
-  transition: all 0.2s;
+  transition: var(--transition-smooth);
 }
 
 .btn-primary {
-  background-color: var(--primary);
+  background-color: var(--primary-blue);
   color: white;
+  box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
 }
 
 .btn-primary:hover {
-  background-color: var(--primary-hover);
+  background-color: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
 }
 
-.text-center {
-  text-align: center;
+/* Cards */
+.job-card,
+.job-card-professional {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: var(--transition-smooth);
 }
 
-.mt-4 {
-  margin-top: 1rem;
+.job-card:hover,
+.job-card-professional:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary-blue);
+  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.1);
+}
+
+/* Status Badges */
+.status-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  text-transform: uppercase;
+}
+
+.status-badge.open {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+/* Footer */
+.footer-professional {
+  background-color: var(--surface);
+  border-top: 1px solid var(--border);
+}
+
+.social-icon {
+  color: var(--text-secondary);
+  transition: var(--transition-smooth);
+}
+
+.social-icon:hover {
+  color: var(--primary-blue);
+  transform: translateY(-3px);
 }
