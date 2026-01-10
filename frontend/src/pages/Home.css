@@ -71,7 +71,7 @@
 .home-container {
     overflow-x: hidden;
     position: relative;
-    background-color: #ffffff;
+    background-color: var(--background);
     /* Match image bg */
 }
 
@@ -130,14 +130,14 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 1rem;
-    background: rgba(239, 246, 255, 0.8);
+    background: var(--surface);
     backdrop-filter: blur(8px);
     color: var(--primary);
     border-radius: 9999px;
     font-size: 0.875rem;
     font-weight: 600;
     margin-bottom: 2rem;
-    border: 1px solid rgba(59, 130, 246, 0.2);
+    border: 1px solid var(--border);
     width: fit-content;
     animation: fadeInUp 0.8s ease-out forwards;
 }
@@ -194,7 +194,7 @@
 }
 
 .btn-outline {
-    background: white;
+    background: var(--surface);
     color: var(--text-main);
     border: 1px solid var(--border);
     padding: 1rem 2rem;
@@ -206,7 +206,7 @@
 .btn-outline:hover {
     border-color: var(--primary);
     color: var(--primary);
-    background: #f8fafc;
+    background: var(--background);
 }
 
 /* Hero Image */
@@ -232,11 +232,11 @@
     gap: 2rem;
     margin-top: 4rem;
     padding: 2.5rem;
-    background: rgba(255, 255, 255, 0.7);
+    background: var(--surface);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.8);
+    border: 1px solid var(--border);
     box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.05);
     animation: fadeInUp 0.8s ease-out 0.8s forwards;
     opacity: 0;
@@ -271,16 +271,16 @@
 /* Features Section */
 .features-section {
     padding: 8rem 0;
-    background-color: #ffffff;
+    background-color: var(--background);
     position: relative;
     z-index: 1;
 }
 
 .feature-card {
     padding: 2.5rem;
-    background: #ffffff;
+    background: var(--surface);
     border-radius: 24px;
-    border: 1px solid rgba(226, 232, 240, 0.6);
+    border: 1px solid var(--border);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
     overflow: hidden;
@@ -311,11 +311,12 @@
 .feature-icon {
     display: inline-flex;
     padding: 1rem;
-    background-color: #eff6ff;
-    color: var(--primary);
+    background-color: var(--primary);
+    color: white;
     border-radius: 16px;
     margin-bottom: 1.5rem;
     transition: all 0.3s ease;
+    opacity: 0.9;
 }
 
 .feature-card:hover .feature-icon {
@@ -352,8 +353,8 @@
 
 .about-section {
     padding: 5rem 0;
-    background: #ffffff;
-    border-top: 1px solid #e5e7eb;
+    background: var(--background);
+    border-top: 1px solid var(--border);
 }
 
 .cta-box {
@@ -364,13 +365,13 @@
 .cta-title {
     font-size: 2.25rem;
     font-weight: 700;
-    color: #0f172a;
+    color: var(--text-main);
     margin-bottom: 1rem;
 }
 
 .cta-subtitle {
     font-size: 1.25rem;
-    color: #475569;
+    color: var(--text-secondary);
     margin-bottom: 2rem;
 }
 
