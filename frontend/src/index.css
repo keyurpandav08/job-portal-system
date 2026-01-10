@@ -1,4 +1,9 @@
 :root {
+  --primary-blue: #2563eb;
+  --dark-slate: #1e293b;
+  --light-bg: #f8fafc;
+  --accent-emerald: #10b981;
+  --transition-smooth: all 0.3s ease-in-out;
   /* Colors */
   --primary: #0e7490;
   /* Teal-700 (Link color) */
@@ -46,9 +51,9 @@
 }
 
 body {
-  font-family: var(--font-sans);
-  background-color: var(--background);
-  color: var(--text-main);
+  background-color: var(--light-bg);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--dark-slate);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
@@ -87,13 +92,38 @@ img {
   transition: all 0.2s;
 }
 
+/* Sidebar sticky behavior */
+@media (min-width: 992px) {
+  .sticky-top {
+    position: sticky;
+    top: 2rem;
+    z-index: 1020;
+  }
+}
+
+/* Professional Polish Classes */
+.rounded-4 { border-radius: 1.25rem !important; }
+.bg-success-soft { background-color: #f0fdf4 !important; color: #166534 !important; }
+.leading-relaxed { line-height: 1.75; }
+.text-slate-900 { color: #0f172a; }
+.text-slate-600 { color: #475569; }
+
+/* Subtle Animations */
+.hover-translate-left:hover {
+    transform: translateX(-5px);
+    transition: transform 0.2s ease;
+}
+
 .btn-primary {
-  background-color: var(--primary);
-  color: white;
+    background-color: #2563eb !important;
+    border: none !important;
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
 }
 
 .btn-primary:hover {
-  background-color: var(--primary-hover);
+    background-color: #1d4ed8 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
 }
 
 .text-center {
@@ -102,4 +132,161 @@ img {
 
 .mt-4 {
   margin-top: 1rem;
+}
+
+.job-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: var(--transition-smooth);
+}
+
+.job-card:hover {
+  border-color: var(--primary-blue);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  transform: scale(1.01);
+}
+
+/* Custom Professional Card */
+.job-card-professional {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1.5rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.job-card-professional:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.1);
+  border-color: #2563eb;
+}
+
+/* Status Badges */
+.status-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  text-transform: uppercase;
+}
+
+.status-badge.open {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.bg-primary-soft {
+    background-color: rgba(37, 99, 235, 0.1);
+}
+
+/* Icons & Grid Info */
+.job-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+/* Dashboard Table Styles */
+.custom-table-container {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  overflow: hidden; /* Keeps the rounded corners */
+  box-shadow: var(--shadow-sm);
+}
+
+.table thead th {
+  background-color: #f8fafc;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.table tbody td {
+  padding: 1rem;
+  vertical-align: middle;
+  color: var(--text-main);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Status Dots for production feel */
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.dot-pending { background-color: #f59e0b; }
+.dot-approved { background-color: #10b981; }
+.dot-rejected { background-color: #ef4444; }
+.bg-light-soft { background-color: #fcfdfe; }
+.x-small { font-size: 0.65rem; }
+.rounded-circle { border-radius: 50% !important; }
+
+/* Custom light background for the profile icons */
+.bg-primary-soft {
+    background-color: rgba(37, 99, 235, 0.08) !important;
+}
+
+/* Button scaling for refined feel */
+.btn-sm {
+    padding: 0.25rem 0.75rem !important;
+    font-size: 0.8rem !important;
+}
+
+
+/* Footer Refinements */
+.footer-professional {
+    background-color: var(--surface);
+    border-top: 1px solid var(--border);
+}
+
+.social-icon {
+    color: var(--text-secondary);
+    transition: var(--transition-smooth);
+}
+
+.social-icon:hover {
+    color: var(--primary-blue);
+    transform: translateY(-3px);
+}
+
+.footer-link-wrapper a {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: var(--transition-smooth);
+}
+
+.footer-link-wrapper a:hover {
+    color: var(--primary-blue);
+    padding-left: 4px; /* Subtle interaction effect */
+}
+
+.footer-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+.footer-link:hover {
+    color: var(--primary-blue);
 }

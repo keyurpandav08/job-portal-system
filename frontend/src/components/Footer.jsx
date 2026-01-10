@@ -1,97 +1,99 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import {
     Facebook,
     Twitter,
     Linkedin,
-    Instagram
+    Instagram,
+    Briefcase,
+    Mail,
+    MapPin
 } from 'lucide-react';
 
 const Footer = () => {
-    return (
-        <footer style={{ backgroundColor: '#f8fafc', borderTop: '1px solid #e2e8f0' }}>
-            <div
-                className="container"
-                style={{
-                    padding: '4rem 0',
-                    display: 'grid',
-                    gridTemplateColumns: '2fr 1fr 1fr 1fr',
-                    gap: '3rem',
-                }}
-            >
-                {/* Brand / About */}
-                <div>
-                    <p style={{ color: '#475569', lineHeight: 1.7, marginBottom: '1.5rem' }}>
-                        Connecting the world's best talent with top-tier companies.
-                        Your career journey starts here.
-                    </p>
+    const currentYear = new Date().getFullYear();
 
-                    <div style={{ display: 'flex', gap: '1rem' }}>
-                        <a href="#" style={iconStyle}><Twitter size={20} /></a>
-                        <a href="#" style={iconStyle}><Linkedin size={20} /></a>
-                        <a href="#" style={iconStyle}><Facebook size={20} /></a>
-                        <a href="#" style={iconStyle}><Instagram size={20} /></a>
+    return (
+        <footer className="footer-professional mt-auto">
+            <div className="container py-5">
+                <div className="row g-4">
+                    {/* Brand Section */}
+                    <div className="col-12 col-lg-4 mb-4 mb-lg-0">
+                        <div className="d-flex align-items-center gap-2 fw-bold text-primary mb-3">
+                            <div className="bg-primary text-white p-1 rounded-2">
+                                <Briefcase size={20} />
+                            </div>
+                            <span className="h5 mb-0 text-slate-900">JobPortal</span>
+                        </div>
+                        <p className="text-slate-600 mb-4 pe-lg-5">
+                            Connecting the world's best talent with top-tier companies. 
+                            Your career journey starts here.
+                        </p>
+                        <div className="d-flex gap-3">
+                            <a href="#" className="social-icon"><Twitter size={20} /></a>
+                            <a href="#" className="social-icon"><Linkedin size={20} /></a>
+                            <a href="#" className="social-icon"><Facebook size={20} /></a>
+                            <a href="#" className="social-icon"><Instagram size={20} /></a>
+                        </div>
+                    </div>
+
+                    {/* Links Sections */}
+                    <div className="col-6 col-md-4 col-lg-2">
+                        <FooterColumn title="For Candidates">
+                            <Link to="/jobs">Browse Jobs</Link>
+                            <Link to="/jobs">Browse Companies</Link>
+                            <Link to="/dashboard">Salary Estimator</Link>
+                        </FooterColumn>
+                    </div>
+
+                    <div className="col-6 col-md-4 col-lg-3">
+                        <FooterColumn title="For Employers">
+                            <Link to="/post-job">Post a Job</Link>
+                            <Link to="/dashboard">Search Talent</Link>
+                            <Link to="/register">Pricing Plans</Link>
+                        </FooterColumn>
+                    </div>
+
+                    <div className="col-12 col-md-4 col-lg-3">
+                        <FooterColumn title="Contact Us">
+                            <div className="d-flex align-items-center gap-2 text-slate-600 small mb-2">
+                                <Mail size={16} /> support@jobportal.com
+                            </div>
+                            <div className="d-flex align-items-center gap-2 text-slate-600 small">
+                                <MapPin size={16} /> Global Tech Plaza, NY
+                            </div>
+                        </FooterColumn>
                     </div>
                 </div>
-
-                {/* Candidates */}
-                <FooterColumn title="For Candidates">
-                    <Link to="/jobs">Browse Jobs</Link>
-                    <Link to="/companies">Browse Companies</Link>
-                    <Link to="/salary">Salary Estimator</Link>
-                    <Link to="/resume">Resume Builder</Link>
-                </FooterColumn>
-
-                {/* Employers */}
-                <FooterColumn title="For Employers">
-                    <Link to="/post-job">Post a Job</Link>
-                    <Link to="/talent">Search Talent</Link>
-                    <Link to="/pricing">Pricing Plans</Link>
-                </FooterColumn>
-
-                {/* Company */}
-                <FooterColumn title="Company">
-                    <Link to="/about">About Us</Link>
-                    <Link to="/contact">Contact</Link>
-                    <Link to="/privacy">Privacy Policy</Link>
-                    <Link to="/terms">Terms of Service</Link>
-                </FooterColumn>
             </div>
 
             {/* Bottom Bar */}
-            <div
-                style={{
-                    borderTop: '1px solid #e2e8f0',
-                    padding: '1.5rem 0',
-                    textAlign: 'center',
-                    color: '#94a3b8',
-                    fontSize: '0.875rem',
-                }}
-            >
-                &copy; {new Date().getFullYear()} CareerLink Inc. All rights reserved.
+            <div className="border-top py-4 bg-light">
+                <div className="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+                    <p className="text-slate-500 small mb-0">
+                        &copy; {currentYear} JobPortal System. All rights reserved.
+                    </p>
+                    <div className="d-flex gap-4 small text-slate-500">
+                        <Link to="/privacy" className="footer-link">Privacy</Link>
+                        <Link to="/terms" className="footer-link">Terms</Link>
+                    </div>
+                </div>
             </div>
         </footer>
     );
 };
 
-/* Reusable column */
 const FooterColumn = ({ title, children }) => (
     <div>
-        <h3 style={{ fontWeight: 600, marginBottom: '1.25rem', color: '#0f172a' }}>
+        <h6 className="fw-bold text-slate-900 mb-3 text-uppercase small" style={{ letterSpacing: '1px' }}>
             {title}
-        </h3>
-        <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            {children.map((child, i) => (
-                <li key={i} style={{ color: '#475569' }}>
-                    {child}
-                </li>
+        </h6>
+        <div className="d-flex flex-column gap-2">
+            {React.Children.map(children, (child) => (
+                <div className="footer-link-wrapper">{child}</div>
             ))}
-        </ul>
+        </div>
     </div>
 );
-
-const iconStyle = {
-    color: '#64748b',
-    transition: 'color 0.2s',
-};
 
 export default Footer;
