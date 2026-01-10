@@ -1,5 +1,5 @@
 :root {
-  /* Colors */
+  /* Light Theme Colors */
   --primary: #0e7490;
   /* Teal-700 (Link color) */
   --primary-hover: #155e75;
@@ -36,6 +36,36 @@
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
 }
 
+/* Dark Theme */
+.dark-theme {
+  --primary: #06b6d4;
+  /* Cyan-500 - brighter for dark mode */
+  --primary-hover: #0891b2;
+  --secondary: #e2e8f0;
+  /* Light text for dark bg */
+  --accent: #fb923c;
+  /* Lighter orange for dark mode */
+  --background: #0f172a;
+  /* Dark navy */
+  --surface: #1e293b;
+  /* Slate-800 */
+  --text-main: #f1f5f9;
+  /* Light text */
+  --text-secondary: #cbd5e1;
+  /* Lighter secondary text */
+  --border: #334155;
+  /* Darker border */
+  --danger: #f87171;
+  /* Lighter red for dark mode */
+  --success: #4ade80;
+  /* Lighter green for dark mode */
+
+  /* Dark mode shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5);
+}
+
 /* Reset & Base */
 *,
 *::before,
@@ -43,6 +73,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 body {
