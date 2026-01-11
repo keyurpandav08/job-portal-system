@@ -2,7 +2,7 @@
 
 # 💼 Job Portal System
 
-A robust, full-stack Job Portal application built with **Spring Boot**, **Thymeleaf**, and **PostgreSQL**. This system features a dual-role architecture (Applicant & Employer) with role-based access control and real-time application tracking.
+A robust, full-stack Job Portal application built with **Spring Boot** (API-only backend) and **React** frontend. This system features a dual-role architecture (Applicant & Employer) with role-based access control and real-time application tracking.
 
 🎬 **[Watch the System Flow Explanation Video](https://www.youtube.com/watch?v=DxSpEyaUvmU)**
 
@@ -26,10 +26,11 @@ A robust, full-stack Job Portal application built with **Spring Boot**, **Thymel
 
 ## 🛠️ Tech Stack
 
-* **Backend:** Spring Boot, Spring Security (Role-based Authorization)
+* **Backend:** Spring Boot REST API, Spring Security (Role-based Authorization)
+* **Frontend:** React with Vite
 * **Data:** Spring Data JPA, PostgreSQL
-* **Frontend:** Thymeleaf (Server-side rendering), HTML5, CSS3
-* **Build Tool:** Maven
+* **API Documentation:** Swagger/OpenAPI
+* **Build Tool:** Maven (Backend), npm (Frontend)
 
 ---
 
@@ -37,37 +38,62 @@ A robust, full-stack Job Portal application built with **Spring Boot**, **Thymel
 
 ### Prerequisites
 
-* **Java 17+**
+* **Java 21+**
 * **Maven 3.6+**
+* **Node.js 16+** and **npm**
 * **PostgreSQL** (Running locally or via Docker)
 
 ### 1. Database Configuration
 
-Create a database named `job_portal` in PostgreSQL. Then, update `src/main/resources/application.properties` (or use your `.env` file):
+Create a database named `job_portal` in PostgreSQL. Then, update `src/main/resources/application.yml`:
 
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/job_portal
-spring.datasource.username=your_username
-spring.datasource.password=your_password
-spring.jpa.hibernate.ddl-auto=update
-
+```yaml
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/jobberdb
+    username: your_username
+    password: your_password
+  jpa:
+    hibernate.ddl-auto: update
 ```
 
-### 2. Run the Application
+### 2. Run the Backend (API Server)
 
 ```bash
 # Clone the repository
-git clone https://github.com/keyurpandav08/job-portal-system.git
+git clone https://github.com/gitKeshav11/job-portal-system.git
 
 # Navigate to the project directory
 cd job-portal-system
 
-# Build and run
+# Build and run the backend
 mvn spring-boot:run
-
 ```
 
-The application will be available at `http://localhost:8080`.
+The backend API will be available at `http://localhost:8080`.
+
+**API Documentation:** Access Swagger UI at `http://localhost:8080/swagger-ui.html`
+
+### 3. Run the Frontend (React App)
+
+```bash
+# Navigate to the frontend directory
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start the development server
+npm run dev
+```
+
+The frontend will be available at `http://localhost:5173`.
+
+---
+
+## 📝 Legacy Templates
+
+**Note:** Thymeleaf server-side templates have been moved to `src/main/resources/legacy-templates/` for archival purposes. The application now uses a React frontend that consumes REST APIs from the Spring Boot backend.
 
 ---
 
