@@ -75,12 +75,13 @@ const Register = () => {
 
                 {error && (
                     <div style={{
-                        backgroundColor: '#fee2e2',
-                        color: '#ef4444',
+                        backgroundColor: 'var(--danger)',
+                        color: 'white',
                         padding: '1rem',
                         borderRadius: '0.5rem',
                         marginBottom: '1.5rem',
-                        textAlign: 'center'
+                        textAlign: 'center',
+                        opacity: 0.9
                     }}>
                         {error}
                     </div>
@@ -177,7 +178,7 @@ const Register = () => {
                             name="role"
                             value={formData.role.name}
                             onChange={handleChange}
-                            style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border)', backgroundColor: 'white' }}
+                            style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border)', backgroundColor: 'var(--surface)' }}
                         >
                             <option value="APPLICANT">Candidate (I want a job)</option>
                             <option value="EMPLOYER">Employer (I want to hire)</option>

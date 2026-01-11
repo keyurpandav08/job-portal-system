@@ -101,6 +101,20 @@ img {
   display: block;
 }
 
+input,
+textarea,
+select {
+  background-color: var(--surface);
+  color: var(--text-main);
+  border: 1px solid var(--border);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
 /* Utilities */
 .container {
   max-width: 1200px;

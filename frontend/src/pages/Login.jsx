@@ -80,12 +80,13 @@ const Login = () => {
 
                 {message && (
                     <div style={{
-                        backgroundColor: '#dcfce7',
-                        color: '#166534',
+                        backgroundColor: 'var(--success)',
+                        color: 'white',
                         padding: '0.75rem',
                         borderRadius: '0.5rem',
                         marginBottom: '1.5rem',
-                        textAlign: 'center'
+                        textAlign: 'center',
+                        opacity: 0.9
                     }}>
                         {message}
                     </div>
@@ -93,12 +94,13 @@ const Login = () => {
 
                 {error && (
                     <div style={{
-                        backgroundColor: '#fee2e2',
-                        color: '#ef4444',
+                        backgroundColor: 'var(--danger)',
+                        color: 'white',
                         padding: '0.75rem',
                         borderRadius: '0.5rem',
                         marginBottom: '1.5rem',
-                        textAlign: 'center'
+                        textAlign: 'center',
+                        opacity: 0.9
                     }}>
                         {error}
                     </div>

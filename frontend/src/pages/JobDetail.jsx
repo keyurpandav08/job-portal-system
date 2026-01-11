@@ -69,10 +69,10 @@ const JobDetail = () => {
                 <ArrowLeft size={18} /> Back to Jobs
             </Link>
 
-            <div style={{ backgroundColor: 'white', borderRadius: '1rem', padding: '3rem', border: '1px solid #e2e8f0' }}>
-                <div style={{ borderBottom: '1px solid #e2e8f0', paddingBottom: '2rem', marginBottom: '2rem' }}>
-                    <h1 style={{ fontSize: '2.5rem', fontWeight: '800', color: '#1e293b', marginBottom: '1rem' }}>{job.title}</h1>
-                    <div style={{ display: 'flex', gap: '2rem', color: '#475569' }}>
+            <div style={{ backgroundColor: 'var(--surface)', borderRadius: '1rem', padding: '3rem', border: '1px solid var(--border)' }}>
+                <div style={{ borderBottom: '1px solid var(--border)', paddingBottom: '2rem', marginBottom: '2rem' }}>
+                    <h1 style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--text-main)', marginBottom: '1rem' }}>{job.title}</h1>
+                    <div style={{ display: 'flex', gap: '2rem', color: 'var(--text-secondary)' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                             <Briefcase size={20} />
                             <span style={{ fontWeight: '500' }}>{job.employerName}</span>
@@ -87,7 +87,7 @@ const JobDetail = () => {
                         </div>
                         {/* CreatedAt isn't in GET /job/{id} response schema, but implies it exists in main object. If missing, omit.*/}
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <span style={{ padding: '0.25rem 0.75rem', backgroundColor: '#eff6ff', color: '#2563eb', borderRadius: '9999px', fontSize: '0.875rem', fontWeight: '600' }}>
+                            <span style={{ padding: '0.25rem 0.75rem', backgroundColor: 'var(--primary)', color: 'white', borderRadius: '9999px', fontSize: '0.875rem', fontWeight: '600', opacity: 0.9 }}>
                                 {job.status}
                             </span>
                         </div>
@@ -96,7 +96,7 @@ const JobDetail = () => {
 
                 <div style={{ marginBottom: '3rem' }}>
                     <h3 style={{ fontSize: '1.5rem', fontWeight: '700', marginBottom: '1rem' }}>Job Description</h3>
-                    <p style={{ lineHeight: '1.8', color: '#334155' }}>
+                    <p style={{ lineHeight: '1.8', color: 'var(--text-secondary)' }}>
                         {job.description}
                     </p>
                 </div>

@@ -87,7 +87,7 @@ const Dashboard = () => {
                             + Post New Job
                         </Link>
                     )}
-                    <button onClick={logout} style={{ color: '#ef4444', fontWeight: 'bold' }}>Logout</button>
+                    <button onClick={logout} style={{ color: 'var(--danger)', fontWeight: 'bold' }}>Logout</button>
                 </div>
             </div>
 

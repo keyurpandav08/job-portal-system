@@ -34,25 +34,25 @@ const JobList = () => {
 
     return (
         <div className="container" style={{ padding: '4rem 1rem' }}>
-            <h1 style={{ fontSize: '2.5rem', fontWeight: '800', marginBottom: '2rem', color: '#1e293b' }}>
+            <h1 style={{ fontSize: '2.5rem', fontWeight: '800', marginBottom: '2rem', color: 'var(--text-main)' }}>
                 Latest Job Openings
             </h1>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '2rem' }}>
                 {jobs.map((job) => (
                     <div key={job.id} style={{
-                        backgroundColor: 'white',
+                        backgroundColor: 'var(--surface)',
                         borderRadius: '1rem',
                         padding: '1.5rem',
-                        border: '1px solid #e2e8f0',
-                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)',
+                        border: '1px solid var(--border)',
+                        boxShadow: 'var(--shadow-md)',
                         transition: 'transform 0.2s',
                         display: 'flex',
                         flexDirection: 'column'
                     }}>
                         <div style={{ marginBottom: '1rem' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
-                                <h3 style={{ fontSize: '1.25rem', fontWeight: '700', color: '#0f172a', marginBottom: '0.5rem' }}>{job.title}</h3>
+                                <h3 style={{ fontSize: '1.25rem', fontWeight: '700', color: 'var(--text-main)', marginBottom: '0.5rem' }}>{job.title}</h3>
                                 <div style={{
                                     padding: '0.25rem 0.75rem',
                                     borderRadius: '9999px',
@@ -64,7 +64,7 @@ const JobList = () => {
                                     {job.status}
                                 </div>
                             </div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#64748b', fontSize: '0.9rem' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
                                 <Briefcase size={16} />
                                 <span>{job.employerName || 'Confidential'}</span>
                             </div>
@@ -74,7 +74,7 @@ const JobList = () => {
                             display: 'flex',
                             gap: '1rem',
                             marginBottom: '1.5rem',
-                            color: '#475569',
+                            color: 'var(--text-secondary)',
                             fontSize: '0.875rem'
                         }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
@@ -97,7 +97,7 @@ const JobList = () => {
             </div>
 
             {jobs.length === 0 && (
-                <div style={{ textAlign: 'center', padding: '4rem', color: '#64748b' }}>
+                <div style={{ textAlign: 'center', padding: '4rem', color: 'var(--text-secondary)' }}>
                     No jobs found at the moment.
                 </div>
             )}

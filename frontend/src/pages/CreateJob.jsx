@@ -51,12 +51,12 @@ const CreateJob = () => {
             <h1 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '2rem' }}>Post a New Job</h1>
 
             {error && (
-                <div style={{ backgroundColor: '#fee2e2', color: '#ef4444', padding: '1rem', borderRadius: '0.5rem', marginBottom: '1rem' }}>
+                <div style={{ backgroundColor: 'var(--danger)', color: 'white', padding: '1rem', borderRadius: '0.5rem', marginBottom: '1rem', opacity: 0.9 }}>
                     {error}
                 </div>
             )}
 
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', backgroundColor: 'white', padding: '2rem', borderRadius: '1rem', boxShadow: 'var(--shadow-md)' }}>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', backgroundColor: 'var(--surface)', padding: '2rem', borderRadius: '1rem', boxShadow: 'var(--shadow-md)', border: '1px solid var(--border)' }}>
                 <div>
                     <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600' }}>Job Title</label>
                     <input
