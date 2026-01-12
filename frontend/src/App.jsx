@@ -1,11 +1,12 @@
 import React from 'react';
+import './index.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
+// import { Toaster } from 'react-hot-toast';
+import ProtectedRoute from './components/ProtectedRoute';
 
 // Layout & Context
 import Layout from './components/Layout';
 import { AuthProvider } from './context/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
 
 // Pages
 import Home from './pages/Home';
@@ -22,7 +23,7 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         {/* 1. Global Toaster: Accessible from any component or API call */}
-        <Toaster 
+        {/* <Toaster 
           position="top-center" 
           toastOptions={{
             duration: 4000,
@@ -32,19 +33,19 @@ function App() {
               color: '#fff',
             },
           }} 
-        />
-        
+        /> */}
+
         <Routes>
           {/* 2. Main Layout Wrapper: Holds the Navbar and Footer */}
           <Route path="/" element={<Layout />}>
-            
+
             {/* Public Routes */}
             <Route index element={<Home />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
             <Route path="jobs" element={<JobList />} />
             <Route path="jobs/:id" element={<JobDetail />} />
-            
+
             {/* 3. Protected Routes: Only for logged-in users */}
             <Route
               path="dashboard"
@@ -54,7 +55,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            
+
             <Route
               path="post-job"
               element={
@@ -73,5 +74,6 @@ function App() {
     </AuthProvider>
   );
 }
+
 
 export default App;
