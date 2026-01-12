@@ -1,5 +1,6 @@
 import { Outlet, Link } from 'react-router-dom';
 import Footer from './Footer';
+import ThemeToggle from './ThemeToggle';
 
 const Layout = () => {
     return (
@@ -16,11 +17,12 @@ const Layout = () => {
                     <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}>
                         <img src="/logo.png" alt="CareerLink" style={{ height: '70px', width: 'auto' }} />
                     </Link>
-                    <nav style={{ display: 'flex', gap: '1rem' }}>
+                    <nav style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                         <Link to="/">Home</Link>
                         <Link to="/jobs">Browse Jobs</Link>
                         <Link to="/login">Login</Link>
                         <Link to="/dashboard">Dashboard</Link>
+                        <ThemeToggle />
                     </nav>
                 </div>
             </header>

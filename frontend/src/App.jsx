@@ -9,6 +9,7 @@ import JobDetail from './pages/JobDetail';
 import Dashboard from './pages/Dashboard';
 import CreateJob from './pages/CreateJob';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import PropTypes from 'prop-types';
 
 // Protected Route Wrapper
@@ -26,35 +27,37 @@ ProtectedRoute.propTypes = {
 
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="login" element={<Login />} />
-            <Route path="register" element={<Register />} />
-            <Route path="jobs" element={<JobList />} />
-            <Route path="jobs/:id" element={<JobDetail />} />
-            <Route
-              path="dashboard"
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="post-job"
-              element={
-                <ProtectedRoute>
-                  <CreateJob />
-                </ProtectedRoute>
-              }
-            />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="login" element={<Login />} />
+              <Route path="register" element={<Register />} />
+              <Route path="jobs" element={<JobList />} />
+              <Route path="jobs/:id" element={<JobDetail />} />
+              <Route
+                path="dashboard"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="post-job"
+                element={
+                  <ProtectedRoute>
+                    <CreateJob />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

@@ -23,14 +23,27 @@ const Dashboard = () => {
                 // If Employer, fetch jobs
                 if (res.data.roleName === 'EMPLOYER') {
                     const jobsRes = await api.get(`/job/user/${res.data.id}`);
-                    setMyJobs(jobsRes.data);
+                    // Ensure we always set an array
+                    if (Array.isArray(jobsRes.data)) {
+                        setMyJobs(jobsRes.data);
+                    } else {
+                        console.warn("Jobs response is not an array:", jobsRes.data);
+                        setMyJobs([]);
+                    }
                 } else {
                     // If Applicant, fetch applications
                     try {
                         const appsRes = await api.get(`/applications/user/${res.data.id}`);
-                        setMyApplications(appsRes.data);
+                        // Ensure we always set an array
+                        if (Array.isArray(appsRes.data)) {
+                            setMyApplications(appsRes.data);
+                        } else {
+                            console.warn("Applications response is not an array:", appsRes.data);
+                            setMyApplications([]);
+                        }
                     } catch (appErr) {
                         console.warn("Failed to fetch applications", appErr);
+                        setMyApplications([]); // Ensure it's an empty array on error
                     }
                 }
             } catch (err) {
@@ -74,13 +87,13 @@ const Dashboard = () => {
                             + Post New Job
                         </Link>
                     )}
-                    <button onClick={logout} style={{ color: '#ef4444', fontWeight: 'bold' }}>Logout</button>
+                    <button onClick={logout} style={{ color: 'var(--danger)', fontWeight: 'bold' }}>Logout</button>
                 </div>
             </div>
 
             {/* Profile Stats */}
             <div style={{
-                backgroundColor: 'white',
+                backgroundColor: 'var(--surface)',
                 padding: '2rem',
                 borderRadius: '1rem',
                 boxShadow: 'var(--shadow-md)',
@@ -122,18 +135,18 @@ const Dashboard = () => {
             {isEmployer ? (
                 <div>
                     <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1.5rem' }}>My Posted Jobs</h3>
-                    {myJobs.length === 0 ? (
+                    {!Array.isArray(myJobs) || myJobs.length === 0 ? (
                         <p>No jobs posted yet.</p>
                     ) : (
                         <div style={{ display: 'grid', gap: '1.5rem' }}>
                             {myJobs.map(job => (
-                                <div key={job.id} style={{ backgroundColor: 'white', padding: '1.5rem', borderRadius: '1rem', border: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <div key={job.id} style={{ backgroundColor: 'var(--surface)', padding: '1.5rem', borderRadius: '1rem', border: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                     <div>
                                         <h4 style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>{job.title}</h4>
                                         <p style={{ color: 'var(--text-secondary)' }}>{job.location} • ${job.salary}</p>
                                     </div>
                                     <div style={{ display: 'flex', gap: '1rem' }}>
-                                        <span style={{ padding: '0.25rem 0.75rem', borderRadius: '999px', backgroundColor: '#eff6ff', color: 'var(--primary)', fontWeight: '600' }}>
+                                        <span style={{ padding: '0.25rem 0.75rem', borderRadius: '999px', backgroundColor: 'var(--primary)', color: 'white', fontWeight: '600', opacity: 0.9 }}>
                                             {job.status}
                                         </span>
                                         {/* Placeholder for View Applications */}
@@ -147,19 +160,19 @@ const Dashboard = () => {
             ) : (
                 <div>
                     <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1.5rem' }}>My Applications</h3>
-                    {myApplications.length === 0 ? (
-                        <div style={{ padding: '2rem', backgroundColor: '#f8fafc', borderRadius: '1rem', textAlign: 'center', border: '1px solid var(--border)' }}>
+                    {!Array.isArray(myApplications) || myApplications.length === 0 ? (
+                        <div style={{ padding: '2rem', backgroundColor: 'var(--background)', borderRadius: '1rem', textAlign: 'center', border: '1px solid var(--border)' }}>
                             <p style={{ color: 'var(--text-secondary)' }}>You haven't applied to any jobs yet.</p>
                             <Link to="/jobs" className="btn-primary-glow" style={{ display: 'inline-block', marginTop: '1rem' }}>Browse Jobs</Link>
                         </div>
                     ) : (
                         <div style={{ display: 'grid', gap: '1.5rem' }}>
                             {myApplications.map(app => (
-                                <div key={app.id} style={{ backgroundColor: 'white', padding: '1.5rem', borderRadius: '1rem', border: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <div key={app.id} style={{ backgroundColor: 'var(--surface)', padding: '1.5rem', borderRadius: '1rem', border: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                     <div>
                                         <h4 style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>{app.jobTitle || `Job #${app.jobId}`}</h4>
-                                        <p style={{ color: 'var(--text-secondary)' }}>Status: <span style={{ fontWeight: 'bold', color: app.status === 'PENDING' ? '#ca8a04' : '#166534' }}>{app.status}</span></p>
-                                        <p style={{ fontSize: '0.875rem', color: '#64748b' }}>Applied on: {new Date(app.appliedAt).toLocaleDateString()}</p>
+                                        <p style={{ color: 'var(--text-secondary)' }}>Status: <span style={{ fontWeight: 'bold', color: app.status === 'PENDING' ? 'var(--accent)' : 'var(--success)' }}>{app.status}</span></p>
+                                        <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Applied on: {new Date(app.appliedAt).toLocaleDateString()}</p>
                                     </div>
                                     <Link to={`/jobs/${app.jobId}`} className="btn-primary-glow" style={{ padding: '0.5rem 1rem', fontSize: '0.9rem' }}>View Job</Link>
                                 </div>
