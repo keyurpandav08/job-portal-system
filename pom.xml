@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.keyurpandav</groupId>
-	<artifactId>jobber</artifactId>
+	<artifactId>CareerLink</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>jobber</name>
 	<description>Job Portal System Using Springboot</description>
