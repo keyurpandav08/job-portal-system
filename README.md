@@ -8,28 +8,28 @@ A robust, full-stack Job Portal application built with **Spring Boot**, **Thymel
 
 ---
 
-## 🛠️ Tech Stack
+## 🚀 Key Features
 
-| Layer | Technology |
-| :--- | :--- |
-| **Frontend** | React.js, Bootstrap 5, Lucide Icons, React Hot Toast |
-| **Backend** | Spring Boot, Spring Security (Role-based Auth) |
-| **Data** | Spring Data JPA, PostgreSQL / MySQL |
-| **Build Tool** | Maven, NPM |
+### 👤 For Job Seekers (Applicants)
+
+* **Smart Profiles:** Register with skills, experience, and contact details [[00:53](http://www.youtube.com/watch?v=DxSpEyaUvmU&t=53)].
+* **One-Click Apply:** Submit applications instantly by providing a resume URL [[02:45](http://www.youtube.com/watch?v=DxSpEyaUvmU&t=165)].
+* **Real-time Tracking:** Monitor application status (Pending, Accepted, Rejected) directly from a personal dashboard [[02:05](http://www.youtube.com/watch?v=DxSpEyaUvmU&t=125)].
+
+### 🏢 For Employers
+
+* **Job Management:** Post, edit, and manage job listings with salary and location details [[03:29](http://www.youtube.com/watch?v=DxSpEyaUvmU&t=209)].
+* **Candidate Pipeline:** View all applicants for specific jobs and manage their hiring status [[03:49](http://www.youtube.com/watch?v=DxSpEyaUvmU&t=229)].
+* **Instant Updates:** Acceptance or rejection status updates are reflected instantly on the applicant's end [[04:11](http://www.youtube.com/watch?v=DxSpEyaUvmU&t=251)].
 
 ---
 
-## 🎯 Key Features
+## 🛠️ Tech Stack
 
-### 👤 For Job Seekers (Applicants)
-- **Smart Profiles:** Manage skills, experience, and contact details in a polished dashboard [[00:53](http://www.youtube.com/watch?v=DxSpEyaUvmU&t=53)].
-- **One-Click Apply:** Submit applications instantly with a professional "Apply" flow [[02:45](http://www.youtube.com/watch?v=DxSpEyaUvmU&t=165)].
-- **Real-time Tracking:** Monitor status (Pending, Accepted, Rejected) with color-coded status badges [[02:05](http://www.youtube.com/watch?v=DxSpEyaUvmU&t=125)].
-
-### 🏢 For Employers
-- **Hiring Command Center:** Post and manage job listings with a structured, icon-driven form [[03:29](http://www.youtube.com/watch?v=DxSpEyaUvmU&t=209)].
-- **Candidate Pipeline:** Review applicant profiles and resumes through a responsive data table [[03:49](http://www.youtube.com/watch?v=DxSpEyaUvmU&t=229)].
-- **Instant Decisioning:** Update application statuses with instant feedback to candidates [[04:11](http://www.youtube.com/watch?v=DxSpEyaUvmU&t=251)].
+* **Backend:** Spring Boot, Spring Security (Role-based Authorization)
+* **Data:** Spring Data JPA, PostgreSQL
+* **Frontend:** Thymeleaf (Server-side rendering), HTML5, CSS3
+* **Build Tool:** Maven
 
 ---
 
@@ -73,12 +73,13 @@ The application will be available at `http://localhost:8080`.
 
 ## 📁 Project Structure
 
-src/main/java/com/jobportal/    # Backend Logic
-client/src/
- ├── components/     # Navbar, Footer, Loader, JobCard
- ├── context/        # AuthContext for global user state
- ├── pages/          # JobList, JobDetail, Dashboard, 404
- └── services/       # API (Axios) configuration
+```text
+src/main/java/com/jobportal/
+ ├── controller/    # Web & REST Controllers [00:04:52]
+ ├── entity/        # JPA Entities (User, Job, Application) [00:01:14]
+ ├── repository/    # Data Access Layer [00:02:36]
+ ├── service/       # Business Logic
+ └── security/      # Spring Security Configuration [00:01:27]
 
 ```
 

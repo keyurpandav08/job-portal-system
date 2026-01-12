@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { User, Lock, LogIn, Briefcase } from 'lucide-react'; // Added Briefcase for consistency if needed, removed unused imports
 import toast from 'react-hot-toast'; // Keeping import as per request context
@@ -12,7 +12,14 @@ const Login = () => {
     const { login } = useAuth();
     const message = location.state?.message;
 
-    const [formData, setFormData] = useState({ username: '', password: '' });
+    // Check if we were redirected with a message (e.g., from Register)
+    const [message, setMessage] = useState(location.state?.message || '');
+
+    const [formData, setFormData] = useState({
+        username: '',
+        password: ''
+    });
+    const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
@@ -22,18 +29,24 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
+        setError('');
 
         try {
-            // Spring Security x-www-form-urlencoded logic
+            // Spring Security formLogin expects x-www-form-urlencoded body
             const params = new URLSearchParams();
             params.append('username', formData.username);
             params.append('password', formData.password);
 
+            // Simple Axios POST now works because Backend allows CORS.
+            // Credentials (Cookies) are handled automatically by withCredentials: true in api.js
             await api.post('/login', params, {
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
             });
 
+            // Login Success (Backend status 200 or 302 handled by Axios usually)
+
             // Fetch Profile
+            // Fetch Profile using the new endpoint
             try {
                 const userRes = await api.get(`/users/username/${formData.username}`);
                 const currentUser = userRes.data;
@@ -46,9 +59,11 @@ const Login = () => {
                 // toast.success(`Welcome back, ${currentUser.username}!`);
                 navigate('/dashboard');
             } catch (profileErr) {
+                console.error("Profile fetch failed", profileErr);
                 login({ username: formData.username, role: { name: 'APPLICANT' } });
                 navigate('/dashboard');
             }
+
         } catch (err) {
             console.error(err);
             // toast.error('Invalid username or password');
@@ -91,6 +106,7 @@ const Login = () => {
                             />
                         </div>
                     </div>
+                )}
 
                     <div className="mb-4">
                         <div className="d-flex justify-content-between align-items-center mb-1">
@@ -110,6 +126,7 @@ const Login = () => {
                             />
                         </div>
                     </div>
+                )}
 
                     <button
                         type="submit"

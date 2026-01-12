@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
     User,
@@ -26,8 +26,9 @@ const Register = () => {
         phone: '',
         skills: '',
         experience: '',
-        role: { name: 'APPLICANT' }
+        role: { name: 'APPLICANT' } // UI State
     });
+    const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
@@ -42,16 +43,22 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
+        setError('');
 
         try {
             let roleToSend = null;
+
             if (formData.role.name === 'APPLICANT') {
+                // Send null, backend defaults to APPLICANT
                 roleToSend = null;
             } else {
                 roleToSend = { id: 2, name: 'EMPLOYER' };
             }
 
-            const payload = { ...formData, role: roleToSend };
+            const payload = {
+                ...formData,
+                role: roleToSend
+            };
 
             await api.post('/users/register', payload);
             // toast.success("Account created successfully!"); 

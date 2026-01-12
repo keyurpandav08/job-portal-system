@@ -26,8 +26,11 @@ target/
 /nbdist/
 /.nb-gradle/
 build/
-!**/src/main/**/build/
+!**/src/main/**/build/s
 !**/src/test/**/build/
 
 ### VS Code ###
 .vscode/
+
+### Environment Variables ###
+.env

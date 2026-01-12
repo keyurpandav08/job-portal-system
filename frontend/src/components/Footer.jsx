@@ -1,18 +1,12 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import {
     Facebook,
     Twitter,
     Linkedin,
-    Instagram,
-    Briefcase,
-    Mail,
-    MapPin
+    Instagram
 } from 'lucide-react';
 
 const Footer = () => {
-    const currentYear = new Date().getFullYear();
-
     return (
         <footer className="footer-professional mt-auto border-top bg-white">
             <div className="container py-5">
@@ -47,6 +41,7 @@ const Footer = () => {
                             <FooterLink to="/dashboard">Career Advice</FooterLink>
                         </div>
                     </div>
+                </div>
 
                     {/* Column 3: Employers */}
                     <div className="col-6 col-md-4 col-lg-3">
@@ -112,5 +107,10 @@ const SocialLink = ({ icon }) => (
         {icon}
     </a>
 );
+
+const iconStyle = {
+    color: '#64748b',
+    transition: 'color 0.2s',
+};
 
 export default Footer;
