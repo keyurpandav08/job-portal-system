@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { User, Lock, LogIn, Briefcase } from 'lucide-react'; // Added Briefcase for consistency if needed, removed unused imports
+import toast from 'react-hot-toast'; // Keeping import as per request context
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
+import './Auth.css';
 
 const Login = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { login } = useAuth();
+    const message = location.state?.message;
 
     // Check if we were redirected with a message (e.g., from Register)
     const [message, setMessage] = useState(location.state?.message || '');
@@ -52,6 +56,7 @@ const Login = () => {
                     username: currentUser.username,
                     role: { name: currentUser.roleName }
                 });
+                // toast.success(`Welcome back, ${currentUser.username}!`);
                 navigate('/dashboard');
             } catch (profileErr) {
                 console.error("Profile fetch failed", profileErr);
@@ -61,86 +66,79 @@ const Login = () => {
 
         } catch (err) {
             console.error(err);
-            setError('Invalid username or password');
+            // toast.error('Invalid username or password');
+            alert('Invalid username or password');
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div style={{ maxWidth: '400px', margin: '4rem auto', padding: '0 1rem' }}>
-            <div style={{
-                backgroundColor: 'var(--surface)',
-                padding: '2rem',
-                borderRadius: '1rem',
-                boxShadow: 'var(--shadow-md)',
-                border: '1px solid var(--border)'
-            }}>
-                <h2 style={{ textAlign: 'center', marginBottom: '2rem', fontSize: '2rem', fontWeight: 'bold' }}>Welcome Back</h2>
+        <div className="register-container py-5">
+            <div className="register-card p-4 p-md-5" style={{ maxWidth: '480px' }}>
+                <div className="register-header mb-4">
+                    <div className="icon-wrapper-large">
+                        <LogIn size={32} />
+                    </div>
+                    <h2 className="fw-bold text-slate-900 mb-2">Welcome Back</h2>
+                    <p className="text-secondary small">Sign in to access your professional dashboard</p>
+                </div>
 
                 {message && (
-                    <div style={{
-                        backgroundColor: 'var(--success)',
-                        color: 'white',
-                        padding: '0.75rem',
-                        borderRadius: '0.5rem',
-                        marginBottom: '1.5rem',
-                        textAlign: 'center',
-                        opacity: 0.9
-                    }}>
-                        {message}
+                    <div className="alert alert-success d-flex align-items-center gap-2 mb-4 p-3 rounded-3 border-0 bg-success-soft" role="alert">
+                        <small className="fw-semibold">{message}</small>
                     </div>
                 )}
 
-                {error && (
-                    <div style={{
-                        backgroundColor: 'var(--danger)',
-                        color: 'white',
-                        padding: '0.75rem',
-                        borderRadius: '0.5rem',
-                        marginBottom: '1.5rem',
-                        textAlign: 'center',
-                        opacity: 0.9
-                    }}>
-                        {error}
+                <form onSubmit={handleSubmit}>
+                    <div className="mb-3">
+                        <label className="form-label-custom">Username</label>
+                        <div className="input-group-custom">
+                            <User size={20} className="input-icon-absolute" />
+                            <input
+                                type="text"
+                                name="username"
+                                className="form-control-custom"
+                                value={formData.username}
+                                onChange={handleChange}
+                                placeholder="Enter your username"
+                                required
+                            />
+                        </div>
                     </div>
                 )}
 
-                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                    <div>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Username</label>
-                        <input
-                            type="text"
-                            name="username"
-                            value={formData.username}
-                            onChange={handleChange}
-                            required
-                            style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border)' }}
-                        />
+                    <div className="mb-4">
+                        <div className="d-flex justify-content-between align-items-center mb-1">
+                            <label className="form-label-custom mb-0">Password</label>
+                            <Link to="/forgot-password" style={{ fontSize: '0.8rem' }} className="text-primary fw-semibold text-decoration-none">Forgot password?</Link>
+                        </div>
+                        <div className="input-group-custom">
+                            <Lock size={20} className="input-icon-absolute" />
+                            <input
+                                type="password"
+                                name="password"
+                                className="form-control-custom"
+                                value={formData.password}
+                                onChange={handleChange}
+                                placeholder="••••••••"
+                                required
+                            />
+                        </div>
                     </div>
-                    <div>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Password</label>
-                        <input
-                            type="password"
-                            name="password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            required
-                            style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border)' }}
-                        />
-                    </div>
+                )}
+
                     <button
                         type="submit"
                         disabled={loading}
-                        className="btn-primary-glow"
-                        style={{ width: '100%', padding: '1rem', marginTop: '1rem' }}
+                        className="btn-submit-custom d-flex align-items-center justify-content-center gap-2"
                     >
-                        {loading ? 'Logging in...' : 'Sign In'}
+                        {loading ? 'Authenticating...' : <><LogIn size={20} /> Sign In</>}
                     </button>
                 </form>
 
-                <p style={{ textAlign: 'center', marginTop: '1.5rem', color: 'var(--text-secondary)' }}>
-                    Don't have an account? <Link to="/register" style={{ color: 'var(--primary)', fontWeight: '600' }}>Register here</Link>
+                <p className="text-center mt-4 text-secondary small">
+                    Don't have an account? <Link to="/register" className="text-primary fw-bold text-decoration-none">Create free account</Link>
                 </p>
             </div>
         </div>

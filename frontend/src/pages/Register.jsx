@@ -1,7 +1,20 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios'; // Direct axios for register if base api has interceptors that might conflict initially, or use api instance
+import {
+    User,
+    UserPlus,
+    Mail,
+    Lock,
+    Phone,
+    Briefcase,
+    Wrench,
+    ShieldCheck,
+    Building2
+} from 'lucide-react';
+import toast from 'react-hot-toast'; // Kept for logic, but verified as removed in App.jsx (if using alternative) - assuming user might want it back or using console logs. 
+// Ideally we should use the "Toaster" replacement if implemented, but for now we follow the file's logic.
 import api from '../services/api';
+import './Auth.css';
 
 const Register = () => {
     const navigate = useNavigate();
@@ -39,10 +52,6 @@ const Register = () => {
                 // Send null, backend defaults to APPLICANT
                 roleToSend = null;
             } else {
-                // For EMPLOYER, backend requires an ID.
-                // Since we cannot fetch role ID (protected endpoint) and cannot change backend,
-                // we assume standard ID '2' for EMPLOYER. 
-                // Checks user constraint: "no never change the existing backend code".
                 roleToSend = { id: 2, name: 'EMPLOYER' };
             }
 
@@ -52,151 +61,174 @@ const Register = () => {
             };
 
             await api.post('/users/register', payload);
+            // toast.success("Account created successfully!"); 
+            console.log("Registration success");
             navigate('/login', { state: { message: 'Registration successful! Please login.' } });
         } catch (err) {
             console.error(err);
-            const msg = err.response?.data ? (typeof err.response.data === 'object' ? JSON.stringify(err.response.data) : err.response.data) : (err.message || 'Registration failed.');
-            setError(msg);
+            const msg = err.response?.data?.message || "Registration failed. Please try again.";
+            // toast.error(msg);
+            alert(msg); // Fallback until toaster is fixed
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div style={{ maxWidth: '500px', margin: '4rem auto', padding: '0 1rem' }}>
-            <div style={{
-                backgroundColor: 'var(--surface)',
-                padding: '2.5rem',
-                borderRadius: '1rem',
-                boxShadow: 'var(--shadow-md)',
-                border: '1px solid var(--border)'
-            }}>
-                <h2 style={{ textAlign: 'center', marginBottom: '2rem', fontSize: '2rem', fontWeight: 'bold' }}>Create Account</h2>
-
-                {error && (
-                    <div style={{
-                        backgroundColor: 'var(--danger)',
-                        color: 'white',
-                        padding: '1rem',
-                        borderRadius: '0.5rem',
-                        marginBottom: '1.5rem',
-                        textAlign: 'center',
-                        opacity: 0.9
-                    }}>
-                        {error}
+        <div className="register-container py-5">
+            <div className="register-card p-4 p-md-5">
+                <div className="register-header">
+                    <div className="icon-wrapper-large">
+                        <UserPlus size={32} />
                     </div>
-                )}
+                    <h2 className="fw-bold text-slate-900 mb-2">Create Account</h2>
+                    <p className="text-secondary small">Join thousands of professionals on CareerLink</p>
+                </div>
 
-                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                {/* Professional Role Toggler */}
+                <div className="role-toggle-container mb-4">
+                    <button
+                        type="button"
+                        onClick={() => handleChange({ target: { name: 'role', value: 'APPLICANT' } })}
+                        className={`role-toggle-btn ${formData.role.name === 'APPLICANT' ? 'active' : ''}`}
+                    >
+                        <User size={18} /> Candidate
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => handleChange({ target: { name: 'role', value: 'EMPLOYER' } })}
+                        className={`role-toggle-btn ${formData.role.name === 'EMPLOYER' ? 'active' : ''}`}
+                    >
+                        <Building2 size={18} /> Employer
+                    </button>
+                </div>
 
-                    <div>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Full Name</label>
-                        <input
-                            type="text"
-                            name="fullName"
-                            required
-                            value={formData.fullName}
-                            onChange={handleChange}
-                            style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border)' }}
-                        />
-                    </div>
+                <form onSubmit={handleSubmit}>
+                    <div className="row g-3">
+                        {/* Full Name */}
+                        <div className="col-12">
+                            <label className="form-label-custom">Full Name</label>
+                            <div className="input-group-custom">
+                                <User size={20} className="input-icon-absolute" />
+                                <input
+                                    type="text"
+                                    name="fullName"
+                                    required
+                                    value={formData.fullName}
+                                    onChange={handleChange}
+                                    className="form-control-custom"
+                                    placeholder="John Doe"
+                                />
+                            </div>
+                        </div>
 
-                    <div>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Username</label>
-                        <input
-                            type="text"
-                            name="username"
-                            required
-                            value={formData.username}
-                            onChange={handleChange}
-                            style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border)' }}
-                        />
-                    </div>
+                        {/* Username & Email */}
+                        <div className="col-md-6">
+                            <label className="form-label-custom">Username</label>
+                            <div className="input-group-custom">
+                                <ShieldCheck size={20} className="input-icon-absolute" />
+                                <input
+                                    type="text"
+                                    name="username"
+                                    required
+                                    value={formData.username}
+                                    onChange={handleChange}
+                                    className="form-control-custom"
+                                    placeholder="johndoe"
+                                />
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <label className="form-label-custom">Email Address</label>
+                            <div className="input-group-custom">
+                                <Mail size={20} className="input-icon-absolute" />
+                                <input
+                                    type="email"
+                                    name="email"
+                                    required
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    className="form-control-custom"
+                                    placeholder="john@example.com"
+                                />
+                            </div>
+                        </div>
 
-                    <div>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Email</label>
-                        <input
-                            type="email"
-                            name="email"
-                            required
-                            value={formData.email}
-                            onChange={handleChange}
-                            style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border)' }}
-                        />
-                    </div>
+                        {/* Phone */}
+                        <div className="col-12">
+                            <label className="form-label-custom">Phone Number</label>
+                            <div className="input-group-custom">
+                                <Phone size={20} className="input-icon-absolute" />
+                                <input
+                                    type="tel"
+                                    name="phone"
+                                    value={formData.phone}
+                                    onChange={handleChange}
+                                    className="form-control-custom"
+                                    placeholder="+1 (555) 000-0000"
+                                />
+                            </div>
+                        </div>
 
-                    <div>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Phone</label>
-                        <input
-                            type="tel"
-                            name="phone"
-                            value={formData.phone}
-                            onChange={handleChange}
-                            style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border)' }}
-                        />
-                    </div>
+                        {/* Skills & Experience (Conditional maybe? keeping for both for now based on original) */}
+                        <div className="col-md-6">
+                            <label className="form-label-custom">Primary Skills</label>
+                            <div className="input-group-custom">
+                                <Wrench size={20} className="input-icon-absolute" />
+                                <input
+                                    type="text"
+                                    name="skills"
+                                    value={formData.skills}
+                                    onChange={handleChange}
+                                    className="form-control-custom"
+                                    placeholder="e.g. React, Java"
+                                />
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <label className="form-label-custom">Experience</label>
+                            <div className="input-group-custom">
+                                <Briefcase size={20} className="input-icon-absolute" />
+                                <input
+                                    type="text"
+                                    name="experience"
+                                    value={formData.experience}
+                                    onChange={handleChange}
+                                    className="form-control-custom"
+                                    placeholder="e.g. 5+ years"
+                                />
+                            </div>
+                        </div>
 
-                    <div>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Skills</label>
-                        <input
-                            type="text"
-                            name="skills"
-                            value={formData.skills}
-                            onChange={handleChange}
-                            placeholder="e.g. Java, React, Python"
-                            style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border)' }}
-                        />
-                    </div>
-
-                    <div>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Experience</label>
-                        <input
-                            type="text"
-                            name="experience"
-                            value={formData.experience}
-                            onChange={handleChange}
-                            placeholder="e.g. 2 years, Fresh Graduate"
-                            style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border)' }}
-                        />
-                    </div>
-
-                    <div>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Password</label>
-                        <input
-                            type="password"
-                            name="password"
-                            required
-                            value={formData.password}
-                            onChange={handleChange}
-                            style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border)' }}
-                        />
-                    </div>
-
-                    <div>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Account Type</label>
-                        <select
-                            name="role"
-                            value={formData.role.name}
-                            onChange={handleChange}
-                            style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border)', backgroundColor: 'var(--surface)' }}
-                        >
-                            <option value="APPLICANT">Candidate (I want a job)</option>
-                            <option value="EMPLOYER">Employer (I want to hire)</option>
-                        </select>
+                        {/* Password */}
+                        <div className="col-12">
+                            <label className="form-label-custom">Password</label>
+                            <div className="input-group-custom">
+                                <Lock size={20} className="input-icon-absolute" />
+                                <input
+                                    type="password"
+                                    name="password"
+                                    required
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                    className="form-control-custom"
+                                    placeholder="••••••••"
+                                />
+                            </div>
+                        </div>
                     </div>
 
                     <button
                         type="submit"
                         disabled={loading}
-                        className="btn-primary-glow"
-                        style={{ marginTop: '1rem', width: '100%', padding: '1rem', cursor: loading ? 'not-allowed' : 'pointer' }}
+                        className="btn-submit-custom"
                     >
-                        {loading ? 'Creating Account...' : 'Register'}
+                        {loading ? 'Creating Account...' : 'Register Account'}
                     </button>
                 </form>
 
-                <p style={{ textAlign: 'center', marginTop: '1.5rem', color: 'var(--text-secondary)' }}>
-                    Already have an account? <Link to="/login" style={{ color: 'var(--primary)', fontWeight: '600' }}>Login here</Link>
+                <p className="text-center mt-4 text-secondary small">
+                    Already have an account? <Link to="/login" className="text-primary fw-bold">Sign in</Link>
                 </p>
             </div>
         </div>
