@@ -63,12 +63,12 @@ const Dashboard = () => {
         }
     }, [user]);
 
-    if (loading) return <div className="container" style={{ padding: '4rem' }}>Loading Dashboard...</div>;
+    if (loading) return <div className="container" style={{ padding: '4rem', color: 'var(--text-main)' }}>Loading Dashboard...</div>;
 
     if (!profile) return (
-        <div className="container" style={{ padding: '4rem' }}>
+        <div className="container" style={{ padding: '4rem', color: 'var(--text-main)' }}>
             <h2>Dashboard</h2>
-            <p>{error || "Could not load profile."}</p>
+            <p style={{ color: 'var(--danger)' }}>{error || "Could not load profile."}</p>
             <button onClick={logout} className="btn-primary-glow">Logout</button>
         </div>
     );
@@ -78,7 +78,7 @@ const Dashboard = () => {
     return (
         <div className="container" style={{ padding: '4rem 1rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem' }}>
-                <h1 style={{ fontSize: '2rem', fontWeight: 'bold' }}>
+                <h1 style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--text-main)' }}>
                     {isEmployer ? 'Employer Dashboard' : 'Candidate Dashboard'}
                 </h1>
                 <div style={{ display: 'flex', gap: '1rem' }}>

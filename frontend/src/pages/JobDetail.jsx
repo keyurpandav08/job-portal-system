@@ -59,9 +59,9 @@ const JobDetail = () => {
         }
     };
 
-    if (loading) return <div className="container" style={{ padding: '4rem' }}>Loading...</div>;
-    if (error) return <div className="container" style={{ padding: '4rem', color: 'red' }}>{error}</div>;
-    if (!job) return <div className="container" style={{ padding: '4rem' }}>Job not found</div>;
+    if (loading) return <div className="container" style={{ padding: '4rem', color: 'var(--text-main)' }}>Loading...</div>;
+    if (error) return <div className="container" style={{ padding: '4rem', color: 'var(--danger)' }}>{error}</div>;
+    if (!job) return <div className="container" style={{ padding: '4rem', color: 'var(--text-main)' }}>Job not found</div>;
 
     return (
         <div className="container" style={{ padding: '4rem 1rem' }}>
