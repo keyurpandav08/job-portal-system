@@ -6,7 +6,61 @@ on:
 
 permissions:
   pull-requests: write
+  issues: writename: PR auto label & assign
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+permissions:
+  pull-requests: write
   issues: write
+
+jobs:
+  label-and-assign:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Label and assign author
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const author = pr.user.login;
+            const prNumber = pr.number;
+            const { owner, repo } = context.repo;
+
+            // Get existing labels
+            const existingLabels = pr.labels.map(label => label.name);
+
+            // Add label ECWoC26 if missing
+            if (!existingLabels.includes("ECWoC26")) {
+              try {
+                await github.rest.issues.addLabels({
+                  owner,
+                  repo,
+                  issue_number: prNumber,
+                  labels: ["ECWoC26"],
+                });
+                core.info("Label ECWoC26 added");
+              } catch (err) {
+                core.warning(`Labeling failed: ${err.message}`);
+              }
+            }
+
+            // Assign PR to author
+            try {
+              await github.rest.issues.addAssignees({
+                owner,
+                repo,
+                issue_number: prNumber,
+                assignees: [author],
+              });
+              core.info(`Assigned PR to ${author}`);
+            } catch (err) {
+              core.warning(`Assigning failed: ${err.message}`);
+            }
+
 
 jobs:
   label-and-assign:
