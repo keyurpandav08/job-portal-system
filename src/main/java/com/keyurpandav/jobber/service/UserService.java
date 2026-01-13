@@ -1,6 +1,5 @@
 package com.keyurpandav.jobber.service;
 
-import com.keyurpandav.jobber.config.SecurityConfig;
 import com.keyurpandav.jobber.dto.UserDto;
 import com.keyurpandav.jobber.entity.Role;
 import com.keyurpandav.jobber.entity.User;
@@ -9,7 +8,6 @@ import com.keyurpandav.jobber.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import java.util.List;
 
@@ -19,7 +17,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final SecurityConfig securityConfig;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public UserDto register(User user){
         // Check for duplicate username or email
@@ -40,7 +38,7 @@ public class UserService {
         }
 
         // Encode password
-        user.setPassword(securityConfig.passwordEncoder().encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return UserDto.toDto(userRepository.save(user));
     }
@@ -53,8 +51,19 @@ public class UserService {
         return userRepository.findByEmail(email).map(UserDto::toDto)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
+    
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found: " + username));
+    }
+    
+    public UserDto getByUsername(String username){
+        return UserDto.toDto(userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found with username: " + username)));
+    }
+    
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found with username: " + username));
     }
 }

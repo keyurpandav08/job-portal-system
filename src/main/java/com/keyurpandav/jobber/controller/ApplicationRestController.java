@@ -1,14 +1,18 @@
 package com.keyurpandav.jobber.controller;
 
 import com.keyurpandav.jobber.dto.ApplicationDto;
+import com.keyurpandav.jobber.dto.ApplicationRequestDto;
 import com.keyurpandav.jobber.entity.Application;
 import com.keyurpandav.jobber.entity.Job;
 import com.keyurpandav.jobber.entity.User;
 import com.keyurpandav.jobber.service.ApplicationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,28 +24,38 @@ public class ApplicationRestController {
     private final ApplicationService applicationService;
 
     @PostMapping("/apply")
-    public ResponseEntity<?> applyToJob(@RequestBody Map<String, Long> payload) {
+    public ResponseEntity<?> applyToJob(@Valid @RequestBody ApplicationRequestDto applicationRequest, 
+                                       BindingResult bindingResult) {
+        
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(error -> 
+                errors.put(error.getField(), error.getDefaultMessage())
+            );
+            return ResponseEntity.badRequest().body(errors);
+        }
+        
         try {
-            Long userId = payload.get("userId");
-            Long jobId = payload.get("jobId");
-
-            if (userId == null || jobId == null) {
-                return ResponseEntity.badRequest().body(Map.of("error", "UserId and JobId are required."));
-            }
-
             // Construct minimal entity for Service
             Application appRequest = new Application();
             User applicant = new User();
-            applicant.setId(userId);
+            applicant.setId(applicationRequest.getUserId());
             
             Job job = new Job();
-            job.setId(jobId);
+            job.setId(applicationRequest.getJobId());
             
             appRequest.setApplicant(applicant);
             appRequest.setJob(job);
             
-            // Resume URL is optional/placeholder for now
-            appRequest.setResumeUrl("resume_placeholder.pdf");
+            // Set optional fields if provided
+            if (applicationRequest.getCoverLetter() != null) {
+                appRequest.setCoverLetter(applicationRequest.getCoverLetter());
+            }
+            if (applicationRequest.getResumeUrl() != null) {
+                appRequest.setResumeUrl(applicationRequest.getResumeUrl());
+            } else {
+                appRequest.setResumeUrl("resume_placeholder.pdf");
+            }
 
             ApplicationDto createdApp = applicationService.applyToJob(appRequest);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdApp);
@@ -51,6 +65,7 @@ public class ApplicationRestController {
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(Map.of("error", "Application failed: " + e.getMessage()));
         }
+    }
     }
 
     @GetMapping("/user/{userId}")
