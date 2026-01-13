@@ -9,7 +9,7 @@ import {
     CheckCircle,
     Building2
 } from 'lucide-react';
-import HeroImage from '../assets/hero-illustration.png';
+import HeroImage from '../assets/image.png';
 import './Home.css';
 
 const Home = () => {

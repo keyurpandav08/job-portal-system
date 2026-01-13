@@ -1,3 +1,11 @@
+@import './theme/tokens.css';
+
+body {
+  background-color: var(--bg);
+  color: var(--text-primary);
+}
+
+
 :root {
   /* Light Theme Colors */
   --primary: #0e7490;
