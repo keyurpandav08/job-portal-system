@@ -43,7 +43,7 @@ public class ApplicationRestController {
             // Resume URL is optional/placeholder for now
             appRequest.setResumeUrl("resume_placeholder.pdf");
 
-            ApplicationDto createdApp = applicationService.applyToJob(appRequest);
+            ApplicationDto createdApp = applicationService.applyToJob(appRequest, null);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdApp);
 
         } catch (IllegalArgumentException e) {

@@ -31,10 +31,13 @@ public class SecurityConfig {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
+
+                
+
                 .authorizeHttpRequests(auth -> auth
                         // Swagger / OpenAPI
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers(org.springframework.http.HttpMethod.GET, "/job", "/job/**").permitAll()
                         .requestMatchers("/", "/home", "/register", "/css/**", "/js/**", "/images/**", "/login", "/users/register").permitAll()
                         .requestMatchers("/dashboard/user/**", "/applications/**").hasRole("APPLICANT")
@@ -61,7 +64,7 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/home?logout=true")
                         .permitAll()
                 );
-
+                
         return http.build();
     }
 

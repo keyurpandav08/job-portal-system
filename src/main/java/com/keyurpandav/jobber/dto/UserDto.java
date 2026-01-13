@@ -27,7 +27,7 @@ public class UserDto {
                 .phone(u.getPhone())
                 .skills(u.getSkills())
                 .experience(u.getExperience())
-                .roleName(u.getRole().getName())
+                .roleName(u.getRole().name())
                 .createdAt(u.getCreatedAt())
                 .applicationCount(u.getApplications() != null ? u.getApplications().size() : 0)
                 .build();
