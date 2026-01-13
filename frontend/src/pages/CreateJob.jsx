@@ -48,7 +48,7 @@ const CreateJob = () => {
 
     return (
         <div className="container" style={{ padding: '4rem 1rem', maxWidth: '800px' }}>
-            <h1 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '2rem' }}>Post a New Job</h1>
+            <h1 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '2rem', color: 'var(--text-main)' }}>Post a New Job</h1>
 
             {error && (
                 <div style={{ backgroundColor: 'var(--danger)', color: 'white', padding: '1rem', borderRadius: '0.5rem', marginBottom: '1rem', opacity: 0.9 }}>
@@ -58,7 +58,7 @@ const CreateJob = () => {
 
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', backgroundColor: 'var(--surface)', padding: '2rem', borderRadius: '1rem', boxShadow: 'var(--shadow-md)', border: '1px solid var(--border)' }}>
                 <div>
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600' }}>Job Title</label>
+                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: 'var(--text-main)' }}>Job Title</label>
                     <input
                         type="text"
                         name="title"
@@ -66,12 +66,12 @@ const CreateJob = () => {
                         onChange={handleChange}
                         required
                         placeholder="e.g. Senior React Developer"
-                        style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border)' }}
+                        style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border)', backgroundColor: 'var(--surface)', color: 'var(--text-main)' }}
                     />
                 </div>
 
                 <div>
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600' }}>Location</label>
+                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: 'var(--text-main)' }}>Location</label>
                     <input
                         type="text"
                         name="location"
@@ -79,12 +79,12 @@ const CreateJob = () => {
                         onChange={handleChange}
                         required
                         placeholder="e.g. Remote, San Francisco"
-                        style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border)' }}
+                        style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border)', backgroundColor: 'var(--surface)', color: 'var(--text-main)' }}
                     />
                 </div>
 
                 <div>
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600' }}>Salary ($)</label>
+                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: 'var(--text-main)' }}>Salary ($)</label>
                     <input
                         type="number"
                         name="salary"
@@ -92,12 +92,12 @@ const CreateJob = () => {
                         onChange={handleChange}
                         required
                         placeholder="e.g. 120000"
-                        style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border)' }}
+                        style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border)', backgroundColor: 'var(--surface)', color: 'var(--text-main)' }}
                     />
                 </div>
 
                 <div>
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600' }}>Description</label>
+                    <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', color: 'var(--text-main)' }}>Description</label>
                     <textarea
                         name="description"
                         value={formData.description}
@@ -105,7 +105,7 @@ const CreateJob = () => {
                         required
                         rows="6"
                         placeholder="Describe requirements, responsibilities, etc."
-                        style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border)', fontFamily: 'inherit' }}
+                        style={{ width: '100%', padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid var(--border)', backgroundColor: 'var(--surface)', color: 'var(--text-main)', fontFamily: 'inherit' }}
                     />
                 </div>
 

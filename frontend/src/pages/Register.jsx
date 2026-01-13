@@ -11,8 +11,6 @@ import {
     ShieldCheck,
     Building2
 } from 'lucide-react';
-import toast from 'react-hot-toast'; // Kept for logic, but verified as removed in App.jsx (if using alternative) - assuming user might want it back or using console logs. 
-// Ideally we should use the "Toaster" replacement if implemented, but for now we follow the file's logic.
 import api from '../services/api';
 import './Auth.css';
 

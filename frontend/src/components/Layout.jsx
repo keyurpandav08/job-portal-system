@@ -11,17 +11,18 @@ const Layout = () => {
                 padding: '1rem',
                 position: 'sticky',
                 top: 0,
-                zIndex: 50
+                zIndex: 50,
+                color: 'var(--text-main)'
             }}>
                 <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}>
                         <img src="/logo.png" alt="CareerLink" style={{ height: '70px', width: 'auto' }} />
                     </Link>
                     <nav style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                        <Link to="/">Home</Link>
-                        <Link to="/jobs">Browse Jobs</Link>
-                        <Link to="/login">Login</Link>
-                        <Link to="/dashboard">Dashboard</Link>
+                        <Link to="/" style={{ color: 'var(--text-main)', textDecoration: 'none', transition: 'color 0.2s' }} onMouseEnter={(e) => e.target.style.color = 'var(--primary)'} onMouseLeave={(e) => e.target.style.color = 'var(--text-main)'}>Home</Link>
+                        <Link to="/jobs" style={{ color: 'var(--text-main)', textDecoration: 'none', transition: 'color 0.2s' }} onMouseEnter={(e) => e.target.style.color = 'var(--primary)'} onMouseLeave={(e) => e.target.style.color = 'var(--text-main)'}>Browse Jobs</Link>
+                        <Link to="/login" style={{ color: 'var(--text-main)', textDecoration: 'none', transition: 'color 0.2s' }} onMouseEnter={(e) => e.target.style.color = 'var(--primary)'} onMouseLeave={(e) => e.target.style.color = 'var(--text-main)'}>Login</Link>
+                        <Link to="/dashboard" style={{ color: 'var(--text-main)', textDecoration: 'none', transition: 'color 0.2s' }} onMouseEnter={(e) => e.target.style.color = 'var(--primary)'} onMouseLeave={(e) => e.target.style.color = 'var(--text-main)'}>Dashboard</Link>
                         <ThemeToggle />
                     </nav>
                 </div>

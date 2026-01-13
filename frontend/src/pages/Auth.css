@@ -4,13 +4,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: var(--background);
 }
 
 .register-card {
-    background: white;
+    background: var(--surface);
     border-radius: 1.5rem;
-    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
-    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
     overflow: hidden;
     width: 100%;
     max-width: 600px; /* Max width as requested */
@@ -25,8 +26,8 @@
 .icon-wrapper-large {
     width: 64px;
     height: 64px;
-    background-color: rgba(37, 99, 235, 0.1);
-    color: var(--primary-blue);
+    background-color: rgba(6, 182, 212, 0.1);
+    color: var(--primary);
     border-radius: 50%;
     display: inline-flex;
     align-items: center;
@@ -45,7 +46,7 @@
     left: 1.25rem;
     top: 50%;
     transform: translateY(-50%);
-    color: #94a3b8;
+    color: var(--text-secondary);
     transition: color 0.2s ease;
     z-index: 10;
 }
@@ -53,24 +54,28 @@
 .form-control-custom {
     width: 100%;
     padding: 0.875rem 1rem 0.875rem 3rem; /* Left padding for icon */
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border);
     border-radius: 0.75rem;
     font-size: 0.95rem;
-    background-color: #f8fafc;
-    transition: all 0.2s ease;
+    background-color: var(--surface);
     color: var(--text-main);
+    transition: all 0.2s ease;
+}
+
+.form-control-custom::placeholder {
+    color: var(--text-secondary);
 }
 
 .form-control-custom:focus {
     outline: none;
-    border-color: var(--primary-blue);
-    background-color: white;
-    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+    border-color: var(--primary);
+    background-color: var(--surface);
+    box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.1);
 }
 
 .form-control-custom:focus + .input-icon-absolute,
 .input-group-custom:focus-within .input-icon-absolute {
-    color: var(--primary-blue);
+    color: var(--primary);
 }
 
 .form-label-custom {
@@ -84,11 +89,12 @@
 
 /* Role Toggler */
 .role-toggle-container {
-    background-color: #f1f5f9;
+    background-color: var(--background);
     padding: 0.35rem;
     border-radius: 1rem;
     display: flex;
     gap: 0.5rem;
+    border: 1px solid var(--border);
 }
 
 .role-toggle-btn {
@@ -109,14 +115,14 @@
 }
 
 .role-toggle-btn.active {
-    background-color: white;
-    color: var(--primary-blue);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    background-color: var(--surface);
+    color: var(--primary);
+    box-shadow: var(--shadow-md);
 }
 
 /* Submit Button */
 .btn-submit-custom {
-    background: linear-gradient(135deg, var(--primary-blue) 0%, #1d4ed8 100%);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
     color: white;
     border: none;
     padding: 1rem;
@@ -125,12 +131,12 @@
     width: 100%;
     margin-top: 1.5rem;
     transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
 }
 
 .btn-submit-custom:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
-    background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+    box-shadow: 0 10px 15px -3px rgba(6, 182, 212, 0.3);
 }
 
 .btn-submit-custom:disabled {

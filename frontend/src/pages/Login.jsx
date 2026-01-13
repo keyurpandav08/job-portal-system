@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { User, Lock, LogIn, Briefcase } from 'lucide-react'; // Added Briefcase for consistency if needed, removed unused imports
-import toast from 'react-hot-toast'; // Keeping import as per request context
+import { User, Lock, LogIn } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import './Auth.css';
@@ -10,7 +9,6 @@ const Login = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { login } = useAuth();
-    const message = location.state?.message;
 
     // Check if we were redirected with a message (e.g., from Register)
     const [message, setMessage] = useState(location.state?.message || '');
@@ -106,7 +104,6 @@ const Login = () => {
                             />
                         </div>
                     </div>
-                )}
 
                     <div className="mb-4">
                         <div className="d-flex justify-content-between align-items-center mb-1">
@@ -126,7 +123,6 @@ const Login = () => {
                             />
                         </div>
                     </div>
-                )}
 
                     <button
                         type="submit"

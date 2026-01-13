@@ -29,7 +29,7 @@ const JobList = () => {
     }
 
     if (error) {
-        return <div className="text-center" style={{ padding: '4rem', color: 'red' }}>{error}</div>;
+        return <div className="text-center" style={{ padding: '4rem', color: 'var(--danger)' }}>{error}</div>;
     }
 
     return (
@@ -56,8 +56,8 @@ const JobList = () => {
                                 <div style={{
                                     padding: '0.25rem 0.75rem',
                                     borderRadius: '9999px',
-                                    backgroundColor: job.status === 'Open' ? '#dcfce7' : '#f1f5f9',
-                                    color: job.status === 'Open' ? '#166534' : '#64748b',
+                                    backgroundColor: job.status === 'Open' ? 'rgba(34, 197, 94, 0.15)' : 'rgba(107, 114, 128, 0.15)',
+                                    color: job.status === 'Open' ? 'var(--success)' : 'var(--text-secondary)',
                                     fontSize: '0.75rem',
                                     fontWeight: '600'
                                 }}>
