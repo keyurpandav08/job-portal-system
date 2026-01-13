@@ -12,7 +12,7 @@ spring:
 # JWT Configuration
 jwt:
   secret: myVerySecureSecretKey123456789012345678901234567890ABCDEFGHIJK
-  access-token-expiration: 86400000  # 24 hours in milliseconds
+  access-token-expiration: 86400000 # 24 hours in milliseconds
   refresh-token-expiration: 604800000 # 7 days in milliseconds
 
 # Logging Configuration
