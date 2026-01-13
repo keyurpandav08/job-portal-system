@@ -47,13 +47,13 @@ jobs:
 
                 Hi @${newIssue.user.login} 👋,
 
-                This issue appears to be **similar to an existing one**:
+                This issue appears to be similar to an existing one:
 
                 👉 **#${issue.number} – ${issue.title}**
 
                 ### ✅ What should you do?
                 - If this is the same problem, please continue the discussion on the existing issue.
-                - If it's different, kindly explain **how this issue is unique** so maintainers can review it.
+                - If it's different, kindly explain how this issue is unique so maintainers can review it.
 
                 Keeping issues clean helps everyone contribute better during **ECWoC'26** 🚀  
                 Thanks for your understanding! 🙌
