@@ -7,6 +7,9 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.keyurpandav.jobber.enums.UserRole;
+
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
@@ -45,7 +48,10 @@ public class User implements UserDetails {
     
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
-    private Role role;
+    
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
     
     @OneToMany(mappedBy = "employer", cascade = CascadeType.ALL)
     private List<Job> jobs;

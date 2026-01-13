@@ -1,0 +1,18 @@
+<h2>Admin Dashboard</h2>
+
+<h3>Users</h3>
+<ul>
+    <li th:each="u : ${users}">
+        <span th:text="${u.email}"></span>
+    </li>
+</ul>
+
+<h3>Jobs</h3>
+<ul>
+    <li th:each="j : ${jobs}">
+        <span th:text="${j.title}"></span>
+        <form th:action="@{/admin/job/delete/{id}(id=${j.id})}" method="post">
+            <button>Delete</button>
+        </form>
+    </li>
+</ul>

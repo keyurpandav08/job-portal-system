@@ -23,6 +23,9 @@ public class Application {
     @Enumerated(EnumType.STRING)
     private ApplicationStatusType status;
 
+    @Column(length = 5000)
+    private String extractedSkills;
+
     @ManyToOne
     @JoinColumn(name = "job_id") private Job job;
 
@@ -34,4 +37,13 @@ public class Application {
         this.appliedAt = new Timestamp(System.currentTimeMillis());
         if(this.status == null) this.status = ApplicationStatusType.PENDING;
     }
+     public String getExtractedSkills() {
+     return extractedSkills;
+ }
+
+ public void setExtractedSkills(String extractedSkills) {
+    this.extractedSkills = extractedSkills;
+}
+
+    
 }

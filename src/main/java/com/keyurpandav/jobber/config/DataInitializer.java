@@ -1,29 +1,31 @@
 package com.keyurpandav.jobber.config;
 
-import com.keyurpandav.jobber.entity.Role;
-import com.keyurpandav.jobber.repository.RoleRepository;
+import com.keyurpandav.jobber.entity.User;
+import com.keyurpandav.jobber.enums.UserRole;
+import com.keyurpandav.jobber.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
-import java.util.List;
+@Component
+public class DataInitializer implements CommandLineRunner {
 
-@Configuration
-public class DataInitializer {
+    @Autowired
+    private UserRepository userRepository;
 
-    @Bean
-    CommandLineRunner initRoles(RoleRepository roleRepository) {
-        return args -> {
-            List<String> roles = List.of("APPLICANT", "EMPLOYER");
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-            for (String roleName : roles) {
-                if (roleRepository.findByName(roleName).isEmpty()) {
-                    Role role = new Role();
-                    role.setName(roleName);
-                    roleRepository.save(role);
-                    System.out.println("Seeded role: " + roleName);
-                }
-            }
-        };
+    @Override
+    public void run(String... args) {
+        if (userRepository.findByEmail("admin@careerlink.com").isEmpty()) {
+            User admin = new User();
+            // name setter not present on User; omit setting name or use existing API on User if available
+            admin.setEmail("admin@careerlink.com");
+            admin.setPassword(passwordEncoder.encode("admin123"));
+            admin.setRole(UserRole.ADMIN);
+            userRepository.save(admin);
+        }
     }
 }
