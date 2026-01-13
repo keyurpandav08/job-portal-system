@@ -48,7 +48,7 @@ public class User implements UserDetails {
     
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
-    
+
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
@@ -68,7 +68,7 @@ public class User implements UserDetails {
     
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities(){
-        return List.of(new SimpleGrantedAuthority("ROLE_" + role.getName().toUpperCase()));
+        return java.util.Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role.getName().toUpperCase()));
     }
     
     @Override public boolean isAccountNonExpired(){ return true; }
