@@ -43,4 +43,3 @@ jobs:
             } catch (err) {
               core.warning(`Assigning failed: ${err.message}`);
             }
-
