@@ -69,4 +69,12 @@ public class JobService {
         return true;
     }
 
+    public JobDto updateJobStatus(Long jobId, StatusType status) {
+        Job job = jobRepository.findById(jobId)
+                .orElseThrow(() -> new IllegalArgumentException("Job not found with id: " + jobId));
+        job.setStatus(status);
+        Job savedJob = jobRepository.save(job);
+        return JobDto.toDto(savedJob);
+    }
+
 }

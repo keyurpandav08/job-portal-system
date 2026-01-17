@@ -92,4 +92,10 @@ public class ApplicationService {
                 .orElseThrow(() -> new IllegalArgumentException("No Application Found with ID: " + appId));
     }
 
+    public List<ApplicationDto> getAllApplications() {
+        return applicationRepository.findAll().stream()
+                .map(ApplicationDto::toDto)
+                .collect(Collectors.toList());
+    }
+
 }
