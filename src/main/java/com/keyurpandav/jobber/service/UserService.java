@@ -1,25 +1,26 @@
 package com.keyurpandav.jobber.service;
 
-import com.keyurpandav.jobber.config.SecurityConfig;
 import com.keyurpandav.jobber.dto.UserDto;
 import com.keyurpandav.jobber.entity.Role;
 import com.keyurpandav.jobber.entity.User;
 import com.keyurpandav.jobber.repository.RoleRepository;
 import com.keyurpandav.jobber.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final SecurityConfig securityConfig;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public UserDto register(User user){
         // Check for duplicate username or email
@@ -40,9 +41,13 @@ public class UserService {
         }
 
         // Encode password
-        user.setPassword(securityConfig.passwordEncoder().encode(user.getPassword()));
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        log.debug("Encoding password for user: {}", user.getUsername());
+        user.setPassword(encodedPassword);
 
-        return UserDto.toDto(userRepository.save(user));
+        User savedUser = userRepository.save(user);
+        log.debug("User registered successfully: {}", savedUser.getUsername());
+        return UserDto.toDto(savedUser);
     }
 
     public List<UserDto> getAll(){
@@ -56,5 +61,14 @@ public class UserService {
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found: " + username));
+    }
+
+    public boolean deleteUser(Long userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new RuntimeException("User not found with id: " + userId);
+        }
+        userRepository.deleteById(userId);
+        log.debug("User deleted successfully: {}", userId);
+        return true;
     }
 }

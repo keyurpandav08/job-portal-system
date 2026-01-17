@@ -1,13 +1,19 @@
 spring:
-  application.name: jobber
+  application:
+    name: jobber
   datasource:
-    url: jdbc:postgresql://localhost:5432/jobberdb
+    url: jdbc:postgresql://localhost:5432/job_portal
     username: postgres
-    password: admin
+    password: root
+    driver-class-name: org.postgresql.Driver
   jpa:
-    hibernate.ddl-auto: update
+    hibernate:
+      ddl-auto: update
     show-sql: true
-    properties.hibernate.format_sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 
-
-server.port: 8080
+server:
+  port: 8080
