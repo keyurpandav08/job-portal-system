@@ -9,6 +9,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 public class SecurityConfig {
@@ -40,21 +45,30 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authenticationProvider(authenticationProvider())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/home", "/register", "/css/**", "/js/**", "/images/**", "/login", "/jobs", "/util/**").permitAll()
-                        .requestMatchers("/dashboard").authenticated()
+                        // Public routes
+                        .requestMatchers(
+                                "/", "/home", "/register", "/css/**", "/js/**", "/images/**",
+                                "/login", "/users/register",
+                                "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**"
+                        ).permitAll()
+
+                        // Public job viewing
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/job", "/job/**").permitAll()
+
+                        // Role-based dashboards
                         .requestMatchers("/dashboard/user/**", "/applications/**").hasRole("APPLICANT")
                         .requestMatchers("/dashboard/employer/**", "/employer/**").hasRole("EMPLOYER")
                         .requestMatchers("/dashboard/admin/**").hasRole("ADMIN")
+
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .usernameParameter("username")
-                        .passwordParameter("password")
                         .defaultSuccessUrl("/dashboard")
                         .failureUrl("/login?error=true")
                         .permitAll()
@@ -66,5 +80,17 @@ public class SecurityConfig {
                 );
 
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
