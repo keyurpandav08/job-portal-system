@@ -9,5 +9,17 @@ spring:
     show-sql: true
     properties.hibernate.format_sql: true
 
+# JWT Configuration
+jwt:
+  secret: myVerySecureSecretKey123456789012345678901234567890ABCDEFGHIJK
+  access-token-expiration: 86400000 # 24 hours in milliseconds
+  refresh-token-expiration: 604800000 # 7 days in milliseconds
+
+# Logging Configuration
+logging:
+  level:
+    com.keyurpandav.jobber: INFO
+    org.springframework.security: DEBUG
+    root: INFO
 
 server.port: 8080

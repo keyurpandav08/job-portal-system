@@ -53,8 +53,19 @@ public class UserService {
         return userRepository.findByEmail(email).map(UserDto::toDto)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
+    
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found: " + username));
+    }
+    
+    public UserDto getByUsername(String username){
+        return UserDto.toDto(userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found with username: " + username)));
+    }
+    
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found with username: " + username));
     }
 }
