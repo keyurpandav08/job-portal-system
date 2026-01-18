@@ -17,6 +17,7 @@ body {
   /* Orange (Arrow color) */
   --background: #f8fafc;
   --surface: #ffffff;
+  --surface-hover: #f1f5f9;
   --text-main: #0f172a;
   --text-secondary: #475569;
   --border: #e2e8f0;
@@ -57,6 +58,8 @@ body {
   /* Dark navy */
   --surface: #1e293b;
   /* Slate-800 */
+  --surface-hover: #334155;
+  /* Slate-700 */
   --text-main: #f1f5f9;
   /* Light text */
   --text-secondary: #cbd5e1;
