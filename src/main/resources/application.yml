@@ -1,9 +1,9 @@
 spring:
   application.name: jobber
   datasource:
-    url: jdbc:postgresql://localhost:5432/jobberdb
-    username: postgres
-    password: admin
+    url: ${DB_URL}
+    username: ${DB_UNAME}
+    password: ${DB_PASS}
   jpa:
     hibernate.ddl-auto: update
     show-sql: true
