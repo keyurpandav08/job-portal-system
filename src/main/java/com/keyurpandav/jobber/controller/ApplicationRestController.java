@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 import java.util.Map;
 
@@ -35,46 +36,77 @@ public class ApplicationRestController {
             @RequestParam("resume") MultipartFile resumeFile
     ) {
         try {
+            /* =====================
+               1. Validate User & Job
+               ===================== */
+            User applicant = userService.getUserById(userId);
+            Job job = jobRepository.findById(jobId)
+                    .orElseThrow(() -> new RuntimeException("Job not found"));
+
+            /* =====================
+               2. Parse Resume
+               ===================== */
             String extractedResumeText = resumeParserService.extractContent(resumeFile);
-            System.out.println("--- Extracted Resume Content ---\n" + extractedResumeText);
-            // Can save it to database if want
 
-            Application appRequest = new Application();
-            User applicant = new User();
-            applicant.setId(userId);
-            
-            Job job = new Job();
-            job.setId(jobId);
-            
-            appRequest.setApplicant(applicant);
-            appRequest.setJob(job);
-            appRequest.setResumeUrl(resumeFile.getOriginalFilename()); // Can also save file to S3/Disk
+            /* =====================
+               3. Create Application
+               ===================== */
+            Application application = new Application();
+            application.setApplicant(applicant);
+            application.setJob(job);
+            application.setResumeUrl(resumeFile.getOriginalFilename());
 
-            ApplicationDto createdApp = applicationService.applyToJob(appRequest);
+            ApplicationDto createdApplication =
+                    applicationService.applyToJob(application);
 
-            User fullUser = userService.getUserById(userId);
-            Job fullJob = jobRepository.findById(jobId).orElseThrow();
-            
-            emailService.sendApplicationConfirmation(fullUser.getEmail(), fullJob.getTitle());
+            /* =====================
+               4. Send Email (SAFE)
+               ===================== */
+            try {
+                emailService.sendApplicationConfirmation(
+                        applicant.getEmail(),
+                        job.getTitle()
+                );
+            } catch (Exception mailEx) {
+                // Email failure should NOT break application flow
+                System.err.println("Email sending failed: " + mailEx.getMessage());
+            }
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
-                "application", createdApp,
-                "parsedResumePreview", extractedResumeText.substring(0, Math.min(extractedResumeText.length(), 200)) + "..."
-            ));
+            /* =====================
+               5. Resume Preview (NULL SAFE)
+               ===================== */
+            String resumePreview =
+                    (extractedResumeText == null || extractedResumeText.isBlank())
+                            ? "No resume text extracted"
+                            : extractedResumeText.substring(
+                            0, Math.min(extractedResumeText.length(), 200)
+                    ) + "...";
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(
+                    Map.of(
+                            "application", createdApplication,
+                            "parsedResumePreview", resumePreview
+                    )
+            );
 
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.internalServerError().body(Map.of("error", "Application failed: " + e.getMessage()));
+            return ResponseEntity.internalServerError().body(
+                    Map.of("error", "Application failed: " + e.getMessage())
+            );
         }
     }
-    
+
     @GetMapping("/user/{userId}")
     public ResponseEntity<?> getMyApplications(@PathVariable Long userId) {
         try {
-            List<ApplicationDto> apps = applicationService.getApplicationsByUser(userId);
-            return ResponseEntity.ok(apps);
+            List<ApplicationDto> applications =
+                    applicationService.getApplicationsByUser(userId);
+            return ResponseEntity.ok(applications);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+            return ResponseEntity.badRequest().body(
+                    Map.of("error", e.getMessage())
+            );
         }
     }
 }
