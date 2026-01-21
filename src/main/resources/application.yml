@@ -6,6 +6,9 @@ spring:
     username: postgres
     password: root
     driver-class-name: org.postgresql.Driver
+    url: ${DB_URL}
+    username: ${DB_UNAME}
+    password: ${DB_PASS}
   jpa:
     hibernate:
       ddl-auto: update
@@ -14,6 +17,18 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+    properties.hibernate.format_sql: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 server:
   port: 8080
