@@ -10,6 +10,7 @@ import com.keyurpandav.jobber.service.ResumeParserService;
 import com.keyurpandav.jobber.service.UserService;
 import com.keyurpandav.jobber.repository.JobRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,9 +45,19 @@ public class ApplicationRestController {
                     .orElseThrow(() -> new RuntimeException("Job not found"));
 
             /* =====================
-               2. Parse Resume
+               2. Parse Resume (OPTIONAL & SAFE)
                ===================== */
-            String extractedResumeText = resumeParserService.extractContent(resumeFile);
+            String extractedResumeText = null;
+            if (resumeFile != null && !resumeFile.isEmpty()) {
+                try {
+                    extractedResumeText = resumeParserService.extractContent(resumeFile);
+                } catch (Exception e) {
+                    System.err.println("Resume parsing failed for user " + userId + ": " + e.getMessage());
+                    extractedResumeText = "Resume parsing unavailable.";
+                }
+            } else {
+                extractedResumeText = "No resume file provided.";
+            }
 
             /* =====================
                3. Create Application
@@ -54,13 +65,16 @@ public class ApplicationRestController {
             Application application = new Application();
             application.setApplicant(applicant);
             application.setJob(job);
-            application.setResumeUrl(resumeFile.getOriginalFilename());
+            
+            // Handle filename safely
+            String resumeFileName = (resumeFile != null) ? resumeFile.getOriginalFilename() : "unknown_file";
+            application.setResumeUrl(resumeFileName);
 
             ApplicationDto createdApplication =
                     applicationService.applyToJob(application);
 
             /* =====================
-               4. Send Email (SAFE)
+               4. Send Email (SAFE SIDE EFFECT)
                ===================== */
             try {
                 emailService.sendApplicationConfirmation(
@@ -68,24 +82,27 @@ public class ApplicationRestController {
                         job.getTitle()
                 );
             } catch (Exception mailEx) {
-                // Email failure should NOT break application flow
-                System.err.println("Email sending failed: " + mailEx.getMessage());
+                System.err.println("Email sending failed for application " + createdApplication.getId() + ": " + mailEx.getMessage());
             }
 
             /* =====================
                5. Resume Preview (NULL SAFE)
                ===================== */
-            String resumePreview =
-                    (extractedResumeText == null || extractedResumeText.isBlank())
-                            ? "No resume text extracted"
-                            : extractedResumeText.substring(
-                            0, Math.min(extractedResumeText.length(), 200)
-                    ) + "...";
+            String resumePreview;
+            if (extractedResumeText == null || extractedResumeText.isBlank()) {
+                resumePreview = "No resume text extracted";
+            } else {
+                resumePreview = extractedResumeText.substring(
+                        0, Math.min(extractedResumeText.length(), 200)
+                ) + "...";
+            }
 
             return ResponseEntity.status(HttpStatus.CREATED).body(
                     Map.of(
+                            "message", "Application submitted successfully",
                             "application", createdApplication,
-                            "parsedResumePreview", resumePreview
+                            "parsedResumePreview", resumePreview,
+                            "parsingStatus", (extractedResumeText != null && !extractedResumeText.equals("Resume parsing unavailable.")) ? "SUCCESS" : "FAILED"
                     )
             );
 
