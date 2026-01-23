@@ -70,5 +70,7 @@ public class UserService {
         userRepository.deleteById(userId);
         log.debug("User deleted successfully: {}", userId);
         return true;
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(()->new IllegalArgumentException("User Not Found"));
     }
 }
