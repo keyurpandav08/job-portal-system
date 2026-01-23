@@ -1,4 +1,5 @@
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import Footer from './Footer';
 import ThemeToggle from './ThemeToggle';
 
@@ -6,6 +7,28 @@ import ThemeToggle from './ThemeToggle';
 import logo from '../assets/brand/logo/careerlink-logo-primary.png';
 
 const Layout = () => {
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+        navigate('/');
+    };
+
+    const navLinkStyle = {
+        color: 'var(--text-main)',
+        textDecoration: 'none',
+        transition: 'color 0.2s',
+        background: 'none',
+        border: 'none',
+        padding: 0,
+        font: 'inherit',
+        cursor: 'pointer'
+    };
+
+    const handleMouseEnter = (e) => e.target.style.color = 'var(--primary)';
+    const handleMouseLeave = (e) => e.target.style.color = 'var(--text-main)';
+
     return (
         <div className="app-layout">
             <header style={{
@@ -41,36 +64,61 @@ const Layout = () => {
                     <nav style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                         <Link
                             to="/"
-                            style={{ color: 'var(--text-main)', textDecoration: 'none', transition: 'color 0.2s' }}
-                            onMouseEnter={(e) => e.target.style.color = 'var(--primary)'}
-                            onMouseLeave={(e) => e.target.style.color = 'var(--text-main)'}
+                            style={navLinkStyle}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
                         >
                             Home
                         </Link>
                         <Link
                             to="/jobs"
-                            style={{ color: 'var(--text-main)', textDecoration: 'none', transition: 'color 0.2s' }}
-                            onMouseEnter={(e) => e.target.style.color = 'var(--primary)'}
-                            onMouseLeave={(e) => e.target.style.color = 'var(--text-main)'}
+                            style={navLinkStyle}
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
                         >
                             Browse Jobs
                         </Link>
-                        <Link
-                            to="/login"
-                            style={{ color: 'var(--text-main)', textDecoration: 'none', transition: 'color 0.2s' }}
-                            onMouseEnter={(e) => e.target.style.color = 'var(--primary)'}
-                            onMouseLeave={(e) => e.target.style.color = 'var(--text-main)'}
-                        >
-                            Login
-                        </Link>
-                        <Link
-                            to="/dashboard"
-                            style={{ color: 'var(--text-main)', textDecoration: 'none', transition: 'color 0.2s' }}
-                            onMouseEnter={(e) => e.target.style.color = 'var(--primary)'}
-                            onMouseLeave={(e) => e.target.style.color = 'var(--text-main)'}
-                        >
-                            Dashboard
-                        </Link>
+
+                        {user ? (
+                            <>
+                                <Link
+                                    to="/dashboard"
+                                    style={navLinkStyle}
+                                    onMouseEnter={handleMouseEnter}
+                                    onMouseLeave={handleMouseLeave}
+                                >
+                                    Dashboard
+                                </Link>
+                                <button
+                                    onClick={handleLogout}
+                                    style={navLinkStyle}
+                                    onMouseEnter={handleMouseEnter}
+                                    onMouseLeave={handleMouseLeave}
+                                >
+                                    Logout
+                                </button>
+                            </>
+                        ) : (
+                            <>
+                                <Link
+                                    to="/login"
+                                    style={navLinkStyle}
+                                    onMouseEnter={handleMouseEnter}
+                                    onMouseLeave={handleMouseLeave}
+                                >
+                                    Login
+                                </Link>
+                                <Link
+                                    to="/register"
+                                    style={navLinkStyle}
+                                    onMouseEnter={handleMouseEnter}
+                                    onMouseLeave={handleMouseLeave}
+                                >
+                                    Register
+                                </Link>
+                            </>
+                        )}
+                        
                         <ThemeToggle />
                     </nav>
                 </div>
