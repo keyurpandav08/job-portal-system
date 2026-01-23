@@ -7,7 +7,7 @@ import { User, LogOut, Menu, X } from 'lucide-react';
 
 // ✅ ONLY CHANGE: import new logo
 import logo from '../assets/brand/logo/careerlink-logo-primary.png';
-
+//
 const Layout = () => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();

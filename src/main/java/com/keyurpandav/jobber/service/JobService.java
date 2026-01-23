@@ -22,6 +22,7 @@ public class JobService {
     @Autowired
     private UserRepository userReopsitory;
 
+
     public JobDto CreateJobPosting(Job mydata) {
         User employer = userReopsitory.findById(mydata.getEmployer().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Employer not found with id: " + mydata.getEmployer().getId()));

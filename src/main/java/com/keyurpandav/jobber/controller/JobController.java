@@ -63,7 +63,7 @@ public class JobController {
         }
         return jobService.getAllJobs();
     }
-    
+    //search
     @GetMapping("/search")
     public List<JobDto> searchJobs(@RequestParam("keyword") String keyword){
         return jobService.searchJobs(keyword);

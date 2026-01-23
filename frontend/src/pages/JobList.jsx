@@ -8,6 +8,7 @@ const JobList = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [searchParams, setSearchParams] = useSearchParams();
+    //search
     const [searchKeyword, setSearchKeyword] = useState(searchParams.get('search') || '');
 
     useEffect(() => {
