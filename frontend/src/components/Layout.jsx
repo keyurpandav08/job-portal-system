@@ -1,30 +1,20 @@
 import { useState, useEffect, useRef } from 'react';
-import { Outlet, Link, useNavigate } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 import Footer from './Footer';
 import ThemeToggle from './ThemeToggle';
 import { useAuth } from '../context/AuthContext';
-import { User, LogOut, Menu, X, Search } from 'lucide-react';
+import { User, LogOut, Menu, X } from 'lucide-react';
 
 // ✅ ONLY CHANGE: import new logo
 import logo from '../assets/brand/logo/careerlink-logo-primary.png';
 
 const Layout = () => {
     const { user, logout } = useAuth();
-    const navigate = useNavigate();
     const [showMobileMenu, setShowMobileMenu] = useState(false);
     const [showUserMenu, setShowUserMenu] = useState(false);
-    const [searchKeyword, setSearchKeyword] = useState('');
     const userMenuRef = useRef(null);
 
     const isAuthenticated = !!user;
-
-    const handleSearchSubmit = (e) => {
-        e.preventDefault();
-        if (searchKeyword.trim()) {
-            navigate(`/jobs?search=${encodeURIComponent(searchKeyword.trim())}`);
-            setSearchKeyword('');
-        }
-    };
 
     // Close user menu when clicking outside
     useEffect(() => {
@@ -45,7 +35,6 @@ const Layout = () => {
 
     const handleLogout = async () => {
         await logout();
-        navigate('/');
         setShowUserMenu(false);
         setShowMobileMenu(false);
     };
@@ -81,11 +70,6 @@ const Layout = () => {
                     .mobile-nav {
                         display: flex !important;
                     }
-
-                    /* Hide desktop search bar on mobile */
-                    nav form {
-                        display: none !important;
-                    }
                 }
                 
                 @media (min-width: 769px) {
@@ -95,25 +79,6 @@ const Layout = () => {
                     
                     .mobile-nav {
                         display: none !important;
-                    }
-                }
-
-                /* Responsive search bar */
-                @media (max-width: 1024px) {
-                    nav form div {
-                        min-width: 150px !important;
-                        max-width: 200px !important;
-                    }
-                }
-
-                @media (max-width: 900px) {
-                    nav form div {
-                        min-width: 120px !important;
-                        max-width: 150px !important;
-                    }
-                    
-                    nav form div input::placeholder {
-                        font-size: 0.8rem;
                     }
                 }
             `}</style>
@@ -150,48 +115,6 @@ const Layout = () => {
 
                     {/* Desktop Navigation */}
                     <nav style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                        {/* Search Bar */}
-                        <form onSubmit={handleSearchSubmit} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                            <div style={{
-                                position: 'relative',
-                                display: 'flex',
-                                alignItems: 'center',
-                                backgroundColor: 'var(--surface)',
-                                border: '1px solid var(--border)',
-                                borderRadius: '8px',
-                                padding: '0.5rem 0.75rem',
-                                minWidth: '200px',
-                                maxWidth: '300px',
-                                transition: 'all 0.2s ease'
-                            }}
-                            onFocus={(e) => {
-                                e.currentTarget.style.borderColor = 'var(--primary)';
-                                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(6, 182, 212, 0.1)';
-                            }}
-                            onBlur={(e) => {
-                                e.currentTarget.style.borderColor = 'var(--border)';
-                                e.currentTarget.style.boxShadow = 'none';
-                            }}
-                            >
-                                <Search size={16} style={{ color: 'var(--text-secondary)', marginRight: '0.5rem', flexShrink: 0 }} />
-                                <input
-                                    type="text"
-                                    value={searchKeyword}
-                                    onChange={(e) => setSearchKeyword(e.target.value)}
-                                    placeholder="Search jobs..."
-                                    style={{
-                                        border: 'none',
-                                        outline: 'none',
-                                        backgroundColor: 'transparent',
-                                        color: 'var(--text-main)',
-                                        fontSize: '0.9rem',
-                                        width: '100%',
-                                        minWidth: 0
-                                    }}
-                                />
-                            </div>
-                        </form>
-
                         <Link
                             to="/"
                             style={navLinkStyle}
@@ -406,37 +329,6 @@ const Layout = () => {
                         }}
                         className="mobile-nav"
                     >
-                        {/* Mobile Search Bar */}
-                        <form onSubmit={handleSearchSubmit} style={{ marginBottom: '0.5rem' }}>
-                            <div style={{
-                                position: 'relative',
-                                display: 'flex',
-                                alignItems: 'center',
-                                backgroundColor: 'var(--surface)',
-                                border: '1px solid var(--border)',
-                                borderRadius: '8px',
-                                padding: '0.75rem',
-                                width: '100%'
-                            }}>
-                                <Search size={18} style={{ color: 'var(--text-secondary)', marginRight: '0.75rem', flexShrink: 0 }} />
-                                <input
-                                    type="text"
-                                    value={searchKeyword}
-                                    onChange={(e) => setSearchKeyword(e.target.value)}
-                                    placeholder="Search jobs..."
-                                    style={{
-                                        border: 'none',
-                                        outline: 'none',
-                                        backgroundColor: 'transparent',
-                                        color: 'var(--text-main)',
-                                        fontSize: '0.9rem',
-                                        width: '100%',
-                                        minWidth: 0
-                                    }}
-                                />
-                            </div>
-                        </form>
-
                         <Link
                             to="/"
                             onClick={() => setShowMobileMenu(false)}
