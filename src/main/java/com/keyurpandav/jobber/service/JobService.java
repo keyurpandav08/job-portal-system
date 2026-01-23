@@ -78,6 +78,7 @@ public class JobService {
         return JobDto.toDto(savedJob);
     }
 
+    //search jobs
     public List<JobDto> searchJobs(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {
             return getAllJobs();
