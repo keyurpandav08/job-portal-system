@@ -72,6 +72,11 @@ const Layout = () => {
                     .mobile-nav {
                         display: flex !important;
                     }
+
+                    /* Hide desktop search bar on mobile */
+                    nav form {
+                        display: none !important;
+                    }
                 }
                 
                 @media (min-width: 769px) {
@@ -81,6 +86,25 @@ const Layout = () => {
                     
                     .mobile-nav {
                         display: none !important;
+                    }
+                }
+
+                /* Responsive search bar */
+                @media (max-width: 1024px) {
+                    nav form div {
+                        min-width: 150px !important;
+                        max-width: 200px !important;
+                    }
+                }
+
+                @media (max-width: 900px) {
+                    nav form div {
+                        min-width: 120px !important;
+                        max-width: 150px !important;
+                    }
+                    
+                    nav form div input::placeholder {
+                        font-size: 0.8rem;
                     }
                 }
             `}</style>
@@ -116,7 +140,7 @@ const Layout = () => {
                     </Link>
 
                     {/* Desktop Navigation */}
-                    <nav style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                    <nav style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
                         <Link
                             to="/"
                             style={navLinkStyle}

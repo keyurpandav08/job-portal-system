@@ -77,4 +77,13 @@ public class JobService {
         return JobDto.toDto(savedJob);
     }
 
+    public List<JobDto> searchJobs(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return getAllJobs();
+        }
+        return jobRepository.searchByKeyword(keyword.trim()).stream()
+                .map(JobDto::toDto)
+                .collect(Collectors.toList());
+    }
+
 }

@@ -57,8 +57,16 @@ public class JobController {
     }
     
     @GetMapping
-    public List<JobDto> getAllJobs(){
+    public List<JobDto> getAllJobs(@RequestParam(value = "search", required = false) String keyword){
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            return jobService.searchJobs(keyword);
+        }
         return jobService.getAllJobs();
+    }
+    
+    @GetMapping("/search")
+    public List<JobDto> searchJobs(@RequestParam("keyword") String keyword){
+        return jobService.searchJobs(keyword);
     }
     
     @GetMapping("/user/{myid}")
