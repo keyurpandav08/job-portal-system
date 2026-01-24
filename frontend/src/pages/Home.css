@@ -339,6 +339,7 @@
 
     .hero-buttons {
         justify-content: center;
+        flex-wrap: wrap;
     }
 
     .stats-container {
@@ -348,6 +349,20 @@
 
     .stat-item:not(:last-child)::after {
         display: none;
+    }
+
+    /* Search bar responsive */
+    .hero-section form {
+        margin-bottom: 1.5rem;
+    }
+
+    .hero-section form > div {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .hero-section form button {
+        width: 100%;
     }
 }
 

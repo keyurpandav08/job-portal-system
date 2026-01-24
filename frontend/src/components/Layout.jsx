@@ -2,6 +2,8 @@ import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Footer from './Footer';
 import ThemeToggle from './ThemeToggle';
+import { useAuth } from '../context/AuthContext';
+import { User, LogOut, Menu, X } from 'lucide-react';
 
 // ✅ ONLY CHANGE: import new logo
 import logo from '../assets/brand/logo/careerlink-logo-primary.png';
@@ -30,7 +32,33 @@ const Layout = () => {
     const handleMouseLeave = (e) => e.target.style.color = 'var(--text-main)';
 
     return (
-        <div className="app-layout">
+        <>
+            <style>{`
+                @media (max-width: 768px) {
+                    .mobile-menu-btn {
+                        display: block !important;
+                    }
+                    
+                    nav:not(.mobile-nav) {
+                        display: none !important;
+                    }
+                    
+                    .mobile-nav {
+                        display: flex !important;
+                    }
+                }
+                
+                @media (min-width: 769px) {
+                    .mobile-menu-btn {
+                        display: none !important;
+                    }
+                    
+                    .mobile-nav {
+                        display: none !important;
+                    }
+                }
+            `}</style>
+            <div className="app-layout">
             <header style={{
                 backgroundColor: 'var(--surface)',
                 borderBottom: '1px solid var(--border)',
@@ -38,7 +66,8 @@ const Layout = () => {
                 position: 'sticky',
                 top: 0,
                 zIndex: 50,
-                color: 'var(--text-main)'
+                color: 'var(--text-main)',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
             }}>
                 <div
                     className="container"
@@ -53,7 +82,6 @@ const Layout = () => {
                             textDecoration: 'none'
                         }}
                     >
-                        {/* ✅ ONLY LINE CHANGED */}
                         <img
                             src={logo}
                             alt="CareerLink"
@@ -61,7 +89,8 @@ const Layout = () => {
                         />
                     </Link>
 
-                    <nav style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                    {/* Desktop Navigation */}
+                    <nav style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
                         <Link
                             to="/"
                             style={navLinkStyle}
@@ -130,6 +159,7 @@ const Layout = () => {
 
             <Footer />
         </div>
+        </>
     );
 };
 
