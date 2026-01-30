@@ -72,45 +72,152 @@ The application will be available at `http://localhost:8080`.
 ---
 ## 📁 Folder Structure
 ```bash
-├───📁 .github/
-│   └───📁 workflows/
-|       ├───📄 duplicate-issue.yml
-|       ├───📄 issue-create-automate-message
-|       ├───📄 pr-auto-label-assign.yml
-|       └───📄 pr-create-automate-message.yml
-├───📁 .mvn/
-│   └───📁 wrapper/
-|       └───📄 maven-wrapper-properties
-├───📁 frontend/
-│   ├───📁 public/
-│   └───📁 src/
-│       ├───📁 assets/
-│       │   └───📁 brand/
-│       │       └───📁 logo/
-│       ├───📁 components/
-│       ├───📁 context/
-│       ├───📁 pages/
-│       ├───📁 services/
-│       └───📁 theme/
-└───📁 src/
-    ├───📁 main/
-    │   ├───📁 java/
-    │   │   └───📁 com/
-    │   │       └───📁 keyurpandav/
-    │   │           └───📁 jobber/
-    │   │               ├───📁 config/
-    │   │               ├───📁 controller/
-    │   │               ├───📁 dto/
-    │   │               ├───📁 entity/
-    │   │               ├───📁 enums/
-    │   │               ├───📁 repository/
-    │   │               └───📁 service/
-    │   └───📁 resources/
-    └───📁 test/
-        └───📁 java/
-            └───📁 com/
-                └───📁 keyurpandav/
-                    └───📁 jobber/
+📦 job-portal-system/
+├── 📄 .gitattributes
+├── 📄 .gitignore
+├── 📄 backend-output.log
+├── 📄 LICENSE
+├── 📄 mvnw
+├── 📄 mvnw.cmd
+├── 📄 package-lock.json
+├── 📄 pom.xml
+├── 📄 POSTGRESQL_SETUP.md
+├── 📄 README.md
+├── 📄 run-output.txt
+│
+├── 📁 .github/
+│   └── 📁 workflows/
+│       ├── 📄 duplicate-issue.yml
+│       ├── 📄 issue-create-automate-message.yml
+│       ├── 📄 pr-auto-label-assign.yml
+│       └── 📄 pr-create-automate-message.yml
+│
+├── 📁 .mvn/
+│   └── 📁 wrapper/
+│       └── 📄 maven-wrapper.properties
+│
+├── 📁 frontend/
+│   ├── 📄 .gitignore
+│   ├── 📄 CHANGELOG.md
+│   ├── 📄 eslint.config.js
+│   ├── 📄 index.html
+│   ├── 📄 package.json
+│   ├── 📄 package-lock.json
+│   ├── 📄 README.md
+│   ├── 📄 vite.config.js
+│   │
+│   ├── 📁 public/
+│   │   ├── 📄 logo.png
+│   │   └── 📄 vite.svg
+│   │
+│   └── 📁 src/
+│       ├── 📄 App.jsx
+│       ├── 📄 index.css
+│       ├── 📄 main.jsx
+│       │
+│       ├── 📁 assets/
+│       │   ├── 📄 hero-illustration.png
+│       │   ├── 📄 image.png
+│       │   ├── 📄 react.svg
+│       │   ├── 📄 README.md
+│       │   └── 📁 brand/
+│       │       └── 📁 logo/
+│       │           ├── 📄 careerlink-icon.png
+│       │           └── 📄 careerlink-logo-primary.png
+│       │
+│       ├── 📁 components/
+│       │   ├── 📄 Footer.jsx
+│       │   ├── 📄 Layout.jsx
+│       │   ├── 📄 Loader.jsx
+│       │   ├── 📄 ProtectedRoute.jsx
+│       │   ├── 📄 ThemeToggle.css
+│       │   └── 📄 ThemeToggle.jsx
+│       │
+│       ├── 📁 context/
+│       │   ├── 📄 AuthContext.jsx
+│       │   └── 📄 ThemeContext.jsx
+│       │
+│       ├── 📁 pages/
+│       │   ├── 📄 Auth.css
+│       │   ├── 📄 CreateJob.jsx
+│       │   ├── 📄 Dashboard.jsx
+│       │   ├── 📄 Home.css
+│       │   ├── 📄 Home.jsx
+│       │   ├── 📄 JobDetail.jsx
+│       │   ├── 📄 JobList.jsx
+│       │   ├── 📄 Login.jsx
+│       │   ├── 📄 NotFound.jsx
+│       │   └── 📄 Register.jsx
+│       │
+│       ├── 📁 services/
+│       │   └── 📄 api.js
+│       │
+│       └── 📁 theme/
+│           ├── 📄 colors.js
+│           └── 📄 tokens.css
+│
+└── 📁 src/
+    ├── 📁 main/
+    │   ├── 📄 README.md
+    │   ├── 📁 java/
+    │   │   └── 📁 com/
+    │   │       └── 📁 keyurpandav/
+    │   │           └── 📁 jobber/
+    │   │               ├── 📄 JobberApplication.java
+    │   │               │
+    │   │               ├── 📁 config/
+    │   │               │   ├── 📄 DataInitializer.java
+    │   │               │   ├── 📄 SecurityConfig.java
+    │   │               │   └── 📄 UserDetailsServiceImpl.java
+    │   │               │
+    │   │               ├── 📁 controller/
+    │   │               │   ├── 📄 AnalyticsController.java
+    │   │               │   ├── 📄 ApplicationRestController.java
+    │   │               │   ├── 📄 CustomErrorController.java
+    │   │               │   ├── 📄 JobController.java
+    │   │               │   ├── 📄 RoleController.java
+    │   │               │   └── 📄 UserController.java
+    │   │               │
+    │   │               ├── 📁 dto/
+    │   │               │   ├── 📄 ApplicationDto.java
+    │   │               │   ├── 📄 JobDto.java
+    │   │               │   └── 📄 UserDto.java
+    │   │               │
+    │   │               ├── 📁 entity/
+    │   │               │   ├── 📄 Application.java
+    │   │               │   ├── 📄 Job.java
+    │   │               │   ├── 📄 Role.java
+    │   │               │   └── 📄 User.java
+    │   │               │
+    │   │               ├── 📁 enums/
+    │   │               │   ├── 📄 ApplicationStatusType.java
+    │   │               │   └── 📄 StatusType.java
+    │   │               │
+    │   │               ├── 📁 repository/
+    │   │               │   ├── 📄 ApplicationRepository.java
+    │   │               │   ├── 📄 JobRepository.java
+    │   │               │   ├── 📄 RoleRepository.java
+    │   │               │   └── 📄 UserRepository.java
+    │   │               │
+    │   │               └── 📁 service/
+    │   │                   ├── 📄 AnalyticsService.java
+    │   │                   ├── 📄 ApplicationService.java
+    │   │                   ├── 📄 EmailService.java
+    │   │                   ├── 📄 JobService.java
+    │   │                   ├── 📄 ResumeParserService.java
+    │   │                   ├── 📄 RoleService.java
+    │   │                   └── 📄 UserService.java
+    │   │
+    │   └── 📁 resources/
+    │       ├── 📄 application.yml
+    │       └── 📄 Query.sql
+    │
+    └── 📁 test/
+        └── 📁 java/
+            └── 📁 com/
+                └── 📁 keyurpandav/
+                    └── 📁 jobber/
+                        └── 📄 JobberApplicationTests.java
 ```
 ---
 
