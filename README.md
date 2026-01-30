@@ -70,16 +70,59 @@ mvn spring-boot:run
 The application will be available at `http://localhost:8080`.
 
 ---
+## 📁 Folder Structure
+```bash
+├───📁 .github/
+│   └───📁 workflows/
+|       ├───📄 duplicate-issue.yml
+|       ├───📄 issue-create-automate-message
+|       ├───📄 pr-auto-label-assign.yml
+|       └───📄 pr-create-automate-message.yml
+├───📁 .mvn/
+│   └───📁 wrapper/
+|       └───📄 maven-wrapper-properties
+├───📁 frontend/
+│   ├───📁 public/
+│   └───📁 src/
+│       ├───📁 assets/
+│       │   └───📁 brand/
+│       │       └───📁 logo/
+│       ├───📁 components/
+│       ├───📁 context/
+│       ├───📁 pages/
+│       ├───📁 services/
+│       └───📁 theme/
+└───📁 src/
+    ├───📁 main/
+    │   ├───📁 java/
+    │   │   └───📁 com/
+    │   │       └───📁 keyurpandav/
+    │   │           └───📁 jobber/
+    │   │               ├───📁 config/
+    │   │               ├───📁 controller/
+    │   │               ├───📁 dto/
+    │   │               ├───📁 entity/
+    │   │               ├───📁 enums/
+    │   │               ├───📁 repository/
+    │   │               └───📁 service/
+    │   └───📁 resources/
+    └───📁 test/
+        └───📁 java/
+            └───📁 com/
+                └───📁 keyurpandav/
+                    └───📁 jobber/
+```
+---
 
 ## 📁 Project Structure
 
 ```text
-src/main/java/com/jobportal/
- ├── controller/    # Web & REST Controllers [00:04:52]
- ├── entity/        # JPA Entities (User, Job, Application) [00:01:14]
- ├── repository/    # Data Access Layer [00:02:36]
- ├── service/       # Business Logic
- └── security/      # Spring Security Configuration [00:01:27]
+📁 src/main/java/com/jobportal/
+ ├──📁 controller/    # Web & REST Controllers [00:04:52]
+ ├──📁 entity/        # JPA Entities (User, Job, Application) [00:01:14]
+ ├──📁 repository/    # Data Access Layer [00:02:36]
+ ├──📁 service/       # Business Logic
+ └──📁 security/      # Spring Security Configuration [00:01:27]
 
 ```
 
