@@ -11,11 +11,13 @@ import {
     ShieldCheck,
     Building2
 } from 'lucide-react';
+import { useToast } from '../components/Toast';
 import api from '../services/api';
 import './Auth.css';
 
 const Register = () => {
     const navigate = useNavigate();
+    const toast = useToast();
     const [formData, setFormData] = useState({
         username: '',
         email: '',
@@ -43,6 +45,25 @@ const Register = () => {
         setLoading(true);
         setError('');
 
+        // Basic validation
+        if (!formData.username.trim()) {
+            toast.warning('Please enter a username');
+            setLoading(false);
+            return;
+        }
+
+        if (!formData.email.trim()) {
+            toast.warning('Please enter an email address');
+            setLoading(false);
+            return;
+        }
+
+        if (!formData.password || formData.password.length < 6) {
+            toast.warning('Password must be at least 6 characters');
+            setLoading(false);
+            return;
+        }
+
         try {
             let roleToSend = null;
 
@@ -59,14 +80,25 @@ const Register = () => {
             };
 
             await api.post('/users/register', payload);
-            // toast.success("Account created successfully!"); 
+            toast.success("Account created successfully! Please login.");
             console.log("Registration success");
             navigate('/login', { state: { message: 'Registration successful! Please login.' } });
         } catch (err) {
             console.error(err);
             const msg = err.response?.data?.message || "Registration failed. Please try again.";
-            // toast.error(msg);
-            alert(msg); // Fallback until toaster is fixed
+            
+            if (err.response?.status === 409) {
+                toast.error('Username or email already exists');
+            } else if (err.response?.status === 400) {
+                toast.error(msg);
+            } else if (err.response?.status === 429) {
+                toast.warning('Too many registration attempts. Please try again later');
+            } else if (err.code === 'ECONNABORTED' || err.code === 'ERR_NETWORK') {
+                toast.error('Unable to connect to server. Please try again');
+            } else {
+                toast.error('Registration failed. Please try again');
+            }
+            setError(msg);
         } finally {
             setLoading(false);
         }

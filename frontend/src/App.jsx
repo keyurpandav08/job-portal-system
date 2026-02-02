@@ -1,7 +1,6 @@
 import React from 'react';
 import './index.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-// import { Toaster } from 'react-hot-toast';
 import ProtectedRoute from './components/ProtectedRoute';
 import PropTypes from 'prop-types';
 
@@ -9,6 +8,7 @@ import PropTypes from 'prop-types';
 import Layout from './components/Layout';
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { ToastProvider } from './components/Toast';
 
 // Pages
 import Home from './pages/Home';
@@ -27,22 +27,10 @@ ProtectedRoute.propTypes = {
 function App() {
   return (
     <ThemeProvider>
-      <AuthProvider>
-        <BrowserRouter>
-          {/* 1. Global Toaster: Accessible from any component or API call */}
-          {/* <Toaster 
-            position="top-center" 
-            toastOptions={{
-              duration: 4000,
-              style: {
-                borderRadius: '10px',
-                background: '#333',
-                color: '#fff',
-              },
-            }} 
-          /> */}
-
-          <Routes>
+      <ToastProvider>
+        <AuthProvider>
+          <BrowserRouter>
+            <Routes>
             {/* 2. Main Layout Wrapper: Holds the Navbar and Footer */}
             <Route path="/" element={<Layout />}>
 
@@ -78,6 +66,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </AuthProvider>
+    </ToastProvider>
     </ThemeProvider>
   );
 }

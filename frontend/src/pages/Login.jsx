@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { User, Lock, LogIn } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useToast } from '../components/Toast';
 import api from '../services/api';
 import './Auth.css';
 
@@ -9,9 +10,19 @@ const Login = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { login } = useAuth();
+    const toast = useToast();
 
     // Check if we were redirected with a message (e.g., from Register)
     const [message, setMessage] = useState(location.state?.message || '');
+
+    // Show success message as toast if present
+    useEffect(() => {
+        if (message) {
+            toast.success(message);
+            // Clear the message from location state
+            window.history.replaceState({}, document.title);
+        }
+    }, [message, toast]);
 
     const [formData, setFormData] = useState({
         username: '',
@@ -28,6 +39,19 @@ const Login = () => {
         e.preventDefault();
         setLoading(true);
         setError('');
+
+        // Basic validation
+        if (!formData.username.trim()) {
+            toast.warning('Please enter your username');
+            setLoading(false);
+            return;
+        }
+
+        if (!formData.password) {
+            toast.warning('Please enter your password');
+            setLoading(false);
+            return;
+        }
 
         try {
             // Spring Security formLogin expects x-www-form-urlencoded body
@@ -54,18 +78,27 @@ const Login = () => {
                     username: currentUser.username,
                     role: { name: currentUser.roleName }
                 });
-                // toast.success(`Welcome back, ${currentUser.username}!`);
+                toast.success(`Welcome back, ${currentUser.username}!`);
                 navigate('/dashboard');
             } catch (profileErr) {
                 console.error("Profile fetch failed", profileErr);
                 login({ username: formData.username, role: { name: 'APPLICANT' } });
+                toast.success('Login successful!');
                 navigate('/dashboard');
             }
 
         } catch (err) {
             console.error(err);
-            // toast.error('Invalid username or password');
-            alert('Invalid username or password');
+            if (err.response?.status === 401) {
+                toast.error('Invalid username or password');
+            } else if (err.response?.status === 429) {
+                toast.warning('Too many login attempts. Please try again later');
+            } else if (err.code === 'ECONNABORTED' || err.code === 'ERR_NETWORK') {
+                toast.error('Unable to connect to server. Please try again');
+            } else {
+                toast.error('Login failed. Please try again');
+            }
+            setError('Login failed. Please check your credentials.');
         } finally {
             setLoading(false);
         }
@@ -82,9 +115,9 @@ const Login = () => {
                     <p className="text-secondary small">Sign in to access your professional dashboard</p>
                 </div>
 
-                {message && (
-                    <div className="alert alert-success d-flex align-items-center gap-2 mb-4 p-3 rounded-3 border-0 bg-success-soft" role="alert">
-                        <small className="fw-semibold">{message}</small>
+                {error && (
+                    <div className="alert alert-danger d-flex align-items-center gap-2 mb-4 p-3 rounded-3 border-0" role="alert">
+                        <small className="fw-semibold">{error}</small>
                     </div>
                 )}
 
